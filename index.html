@@ -6,156 +6,86 @@
 <title>La Perla – Menu</title>
 <style>
   :root{
-    --bleu:#0A66B7;      /* Bleu Sidi Bou Saïd */
+    --bleu:#0A66B7;
     --bleu2:#0E89FF;
     --bleuProf:#003B73;
     --or:#E6A23C;
     --blanc:#ffffff;
-    --verre: rgba(255,255,255,.75);
+    --verre: rgba(255,255,255,.78);
     --bord: rgba(10,102,183,.18);
     --radius: 18px;
   }
-
-  /* ==== Reset + typo ==== */
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{
     font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
     color: var(--bleuProf);
-    overflow: hidden; /* pas de scroll sur l’écran TV */
+    overflow:hidden;
+    background:#eef6ff;
   }
 
-  /* ==== Fond motif Sidi Bou Saïd dynamique ==== */
-  /* 1) carrelage géométrique avec conic-gradient */
+  /* Fond motif animé (doux) */
   .bg{
-    position: fixed; inset:0; z-index:-2;
+    position:fixed; inset:0; z-index:-2;
     background:
       radial-gradient(circle at 25% 25%, rgba(255,255,255,.25), transparent 50%) 0 0/160px 160px,
       radial-gradient(circle at 75% 75%, rgba(255,255,255,.25), transparent 50%) 0 0/160px 160px,
-      repeating-conic-gradient(from 45deg, rgba(10,102,183,.18) 0 25deg, transparent 25deg 50deg) 0 0/80px 80px,
-      linear-gradient(180deg, #f8fbff 0%, #eef6ff 100%);
-    animation: tiles 60s linear infinite;
+      repeating-conic-gradient(from 45deg, rgba(10,102,183,.16) 0 25deg, transparent 25deg 50deg) 0 0/80px 80px,
+      linear-gradient(180deg,#f8fbff 0%, #eef6ff 100%);
+    animation: tiles 70s linear infinite;
   }
   @keyframes tiles{
     0%{background-position:0 0,0 0,0 0,0 0}
     100%{background-position:200px 0,-200px 0,400px 300px,0 0}
   }
+  .veil{position:fixed; inset:0; z-index:-1; backdrop-filter: blur(2px)}
 
-  /* 2) léger voile pour “verre dépoli” */
-  .veil{
-    position: fixed; inset:0; z-index:-1;
-    backdrop-filter: blur(2px);
-  }
-
-  /* ==== Container principal ==== */
   .wrap{
-    width: 92vw;
-    max-width: 1800px;
-    margin: 3.2vh auto;
-    padding: 2.4vh 2.4vw;
-    background: var(--verre);
-    border: 1px solid var(--bord);
-    border-radius: var(--radius);
-    box-shadow: 0 10px 30px rgba(0,0,0,.08);
-    animation: fadeIn .8s ease-out both;
+    width:min(96vw, 1920px);
+    margin:2.5vh auto;
+    padding:2.2vh 2vw;
+    background:var(--verre);
+    border:1px solid var(--bord);
+    border-radius:var(--radius);
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
   }
-  @keyframes fadeIn{from{opacity:0; transform:translateY(10px)}to{opacity:1; transform:none}}
 
-  /* ==== Header ==== */
-  .header{
-    display:flex; align-items:center; gap:1.4vw; margin-bottom:1.6vh;
-  }
+  /* Header */
+  .header{display:flex; align-items:center; gap:1.4vw; margin-bottom:1.6vh}
   .logo{
-    width: clamp(72px, 10vw, 130px);
-    height:auto;
+    max-height: 11vh;   /* toujours visible sur TV */
+    width:auto; object-fit:contain;
     filter: drop-shadow(0 2px 2px rgba(0,0,0,.12));
   }
   .titlebox{flex:1}
   .title{
-    font-weight:800;
-    letter-spacing:.08em;
-    color:var(--bleu);
-    font-size: clamp(28px, 4vw, 60px);
-    text-transform: uppercase;
-    line-height:1.05;
+    font-weight:900; letter-spacing:.08em; color:var(--bleu);
+    font-size: clamp(32px, 4.4vw, 72px); text-transform:uppercase; line-height:1.05;
   }
-  .subtitle{
-    color: var(--bleu2);
-    font-size: clamp(14px, 1.5vw, 22px);
-    margin-top:.4vh;
-  }
-  /* soulignement animé */
-  .underline{
-    position:relative; height:6px; margin-top:.9vh; border-radius:6px;
-    background:linear-gradient(90deg, transparent, var(--bleu2), transparent);
-    overflow:hidden;
-  }
-  .underline::before{
-    content:""; position:absolute; inset:0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
-    transform: translateX(-100%);
-    animation: shine 4s ease-in-out infinite;
-  }
-  @keyframes shine{
-    0%{transform:translateX(-100%)}
-    50%{transform:translateX(0)}
-    100%{transform:translateX(100%)}
-  }
+  .subtitle{color:var(--bleu2); font-size:clamp(14px,1.6vw,24px); margin-top:.4vh}
+  .underline{position:relative; height:6px; margin-top:.9vh; border-radius:6px; background:linear-gradient(90deg, transparent, var(--bleu2), transparent); overflow:hidden}
+  .underline::before{content:""; position:absolute; inset:0; background:linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent); transform:translateX(-100%); animation:shine 4s ease-in-out infinite}
+  @keyframes shine{0%{transform:translateX(-100%)}50%{transform:translateX(0)}100%{transform:translateX(100%)}}
 
-  /* ==== Plat du jour ==== */
-  .daily{
-    display:flex; align-items:center; gap:1.2vw;
-    margin: 1.8vh 0 2.2vh;
-    padding: 1.2vh 1.4vw;
-    border-radius: 16px;
-    border:2px solid rgba(14,137,255,.25);
-    background: linear-gradient(180deg,#F2F8FF, #FFFFFF);
-    box-shadow: inset 0 0 0 1px rgba(14,137,255,.08);
-    animation: pop .6s ease-out both;
-  }
-  @keyframes pop{from{transform:scale(.98);opacity:0}to{transform:scale(1);opacity:1}}
-  .badge{
-    font-weight:800; color:#C87400; letter-spacing:.06em;
-    border:2px solid #FACD8D; background:#FFF6E6;
-    padding:.4vh .8vw; border-radius:999px; text-transform:uppercase;
-    font-size: clamp(12px, 1.3vw, 18px);
-  }
-  .daily-name{font-size: clamp(18px, 2vw, 28px); font-weight:700}
-  .daily-price{margin-left:auto; font-size: clamp(18px, 2vw, 28px); font-weight:800; color:var(--bleu)}
+  /* Plat du jour */
+  .daily{display:flex; align-items:center; gap:1.2vw; margin:1.8vh 0 2.2vh; padding:1.2vh 1.4vw; border-radius:16px; border:2px solid rgba(14,137,255,.25); background:linear-gradient(180deg,#F2F8FF,#FFFFFF)}
+  .badge{font-weight:800; color:#C87400; letter-spacing:.06em; border:2px solid #FACD8D; background:#FFF6E6; padding:.5vh .9vw; border-radius:999px; text-transform:uppercase; font-size:clamp(12px,1.4vw,20px)}
+  .daily-name{font-size:clamp(18px,2.2vw,32px); font-weight:700}
+  .daily-price{margin-left:auto; font-size:clamp(18px,2.2vw,32px); font-weight:900; color:var(--bleu)}
 
-  /* ==== Grille sections ==== */
+  /* Grille */
   .grid{
     display:grid; gap:1.2vw;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); /* responsive fort */
   }
-  .card{
-    background:#fff; border:1px solid var(--bord);
-    border-radius:16px; padding:1.2vw 1.2vw .9vw; min-height: 26vh;
-    animation: fadeInUp .8s ease-out both;
-  }
-  @keyframes fadeInUp{from{opacity:0; transform:translateY(12px)}to{opacity:1; transform:none}}
-  .card h3{
-    font-size: clamp(16px, 1.8vw, 24px);
-    color:var(--bleu); text-transform:uppercase;
-    border-bottom:2px solid #EEF4FF; padding-bottom:.6vh; margin-bottom:.6vh;
-    letter-spacing:.06em;
-  }
+  .card{background:#fff; border:1px solid var(--bord); border-radius:16px; padding:1.1vw 1.2vw .9vw; min-height:23vh}
+  .card h3{font-size:clamp(16px,1.9vw,26px); color:var(--bleu); text-transform:uppercase; border-bottom:2px solid #EEF4FF; padding-bottom:.6vh; margin-bottom:.6vh; letter-spacing:.06em}
+  .row{display:flex; align-items:baseline; justify-content:space-between; gap:1vw; padding:.35vh 0}
+  .name{font-weight:650; font-size:clamp(14px,1.5vw,20px)}
+  .desc{font-size:clamp(11px,1.05vw,15px); color:#6D7C92}
+  .price{font-weight:900; white-space:nowrap; font-size:clamp(14px,1.5vw,20px); color:var(--bleuProf)}
 
-  .row{display:flex; align-items:baseline; justify-content:space-between; gap:1vw; padding:.3vh 0}
-  .name{font-weight:600; font-size: clamp(14px, 1.3vw, 18px)}
-  .desc{font-size: clamp(11px, 1vw, 14px); color:#6D7C92}
-  .price{font-weight:800; white-space:nowrap; font-size: clamp(14px, 1.3vw, 18px); color:var(--bleuProf)}
-
-  .smallnote{margin-top:1.2vh; text-align:center; color:#6D7C92; font-size: clamp(11px, .95vw, 14px)}
-
-  /* ==== Responsif (si affiché sur écran plus petit) ==== */
-  @media (max-width: 1200px){
-    .grid{grid-template-columns: repeat(2,1fr)}
-  }
-  @media (max-width: 800px){
-    .grid{grid-template-columns: 1fr}
-    body{overflow:auto}
-  }
+  .smallnote{margin-top:1.2vh; text-align:center; color:#6D7C92; font-size:clamp(11px,1vw,14px)}
 </style>
 </head>
 <body>
@@ -165,6 +95,7 @@
   <main class="wrap">
     <!-- Header -->
     <header class="header">
+      <!-- Change ici si ton fichier est .jpg -->
       <img class="logo" src="la-perla-logo.png" alt="La Perla Logo" />
       <div class="titlebox">
         <div class="title">LA PERLA</div>
@@ -173,113 +104,49 @@
       </div>
     </header>
 
-    <!-- Plat du jour (modifie le texte & le prix ici) -->
+    <!-- Plat du jour -->
     <section class="daily">
       <span class="badge">Plat du jour</span>
       <div class="daily-name" id="platJour">Couscous au poulet, légumes frais</div>
       <div class="daily-price" id="prixJour">9,90 €</div>
     </section>
 
-    <!-- Grille des catégories -->
+    <!-- Grille -->
     <section class="grid">
       <!-- Sandwichs -->
-      <article class="card" style="animation-delay:.05s">
+      <article class="card">
         <h3>Sandwichs & Makloub</h3>
-
-        <div class="row">
-          <div>
-            <div class="name">Makloub Poulet</div>
-            <div class="desc">Poulet mariné, frites, harissa, salade</div>
-          </div>
-          <div class="price">7,50 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">Makloub Viande</div>
-            <div class="desc">Viande tendre, salade, sauces maison</div>
-          </div>
-          <div class="price">8,50 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">Baguette Farcie Thon</div>
-            <div class="desc">Thon, œuf, salade, mechouia</div>
-          </div>
-          <div class="price">6,90 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">Mlewi Poulet</div>
-            <div class="desc">Galette maison, poulet mariné</div>
-          </div>
-          <div class="price">7,90 €</div>
-        </div>
+        <div class="row"><div><div class="name">Makloub Poulet</div><div class="desc">Poulet mariné, frites, harissa, salade</div></div><div class="price">7,50 €</div></div>
+        <div class="row"><div><div class="name">Makloub Viande</div><div class="desc">Viande tendre, salade, sauces maison</div></div><div class="price">8,50 €</div></div>
+        <div class="row"><div><div class="name">Baguette Farcie Thon</div><div class="desc">Thon, œuf, salade, mechouia</div></div><div class="price">6,90 €</div></div>
+        <div class="row"><div><div class="name">Mlewi Poulet</div><div class="desc">Galette maison, poulet mariné</div></div><div class="price">7,90 €</div></div>
       </article>
 
       <!-- Pizzas -->
-      <article class="card" style="animation-delay:.1s">
+      <article class="card">
         <h3>Pizzas</h3>
-
-        <div class="row">
-          <div>
-            <div class="name">Margherita</div>
-            <div class="desc">Tomate, mozzarella, basilic</div>
-          </div>
-          <div class="price">7,50 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">Tunisienne</div>
-            <div class="desc">Tomate, thon, olives, œuf</div>
-          </div>
-          <div class="price">8,90 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">4 Fromages</div>
-            <div class="desc">Mélange gourmand de fromages</div>
-          </div>
-          <div class="price">9,50 €</div>
-        </div>
+        <div class="row"><div><div class="name">Margherita</div><div class="desc">Tomate, mozzarella, basilic</div></div><div class="price">7,50 €</div></div>
+        <div class="row"><div><div class="name">Tunisienne</div><div class="desc">Tomate, thon, olives, œuf</div></div><div class="price">8,90 €</div></div>
+        <div class="row"><div><div class="name">4 Fromages</div><div class="desc">Mélange gourmand de fromages</div></div><div class="price">9,50 €</div></div>
       </article>
 
       <!-- Assiettes -->
-      <article class="card" style="animation-delay:.15s">
+      <article class="card">
         <h3>Assiettes</h3>
-
-        <div class="row">
-          <div>
-            <div class="name">Assiette Escalope</div>
-            <div class="desc">Viande + frites + salade</div>
-          </div>
-          <div class="price">10,90 €</div>
-        </div>
-
-        <div class="row">
-          <div>
-            <div class="name">Assiette Mixte</div>
-            <div class="desc">Deux viandes, frites, salade</div>
-          </div>
-          <div class="price">12,90 €</div>
-        </div>
+        <div class="row"><div><div class="name">Assiette Escalope</div><div class="desc">Viande + frites + salade</div></div><div class="price">10,90 €</div></div>
+        <div class="row"><div><div class="name">Assiette Mixte</div><div class="desc">Deux viandes, frites, salade</div></div><div class="price">12,90 €</div></div>
       </article>
 
       <!-- Frites & à côtés -->
-      <article class="card" style="animation-delay:.2s">
+      <article class="card">
         <h3>Frites & à côtés</h3>
-
         <div class="row"><div class="name">Frites maison</div><div class="price">3,00 €</div></div>
         <div class="row"><div class="name">Brik à l'œuf</div><div class="price">3,50 €</div></div>
         <div class="row"><div class="name">Salade Mechouia</div><div class="price">4,50 €</div></div>
       </article>
 
       <!-- Boissons -->
-      <article class="card" style="animation-delay:.25s">
+      <article class="card">
         <h3>Boissons</h3>
         <div class="row"><div class="name">Soda 33cl</div><div class="price">2,50 €</div></div>
         <div class="row"><div class="name">Eau 50cl</div><div class="price">1,50 €</div></div>
@@ -288,22 +155,21 @@
       </article>
 
       <!-- Desserts -->
-      <article class="card" style="animation-delay:.3s">
+      <article class="card">
         <h3>Desserts</h3>
         <div class="row"><div class="name">Baklava</div><div class="price">3,00 €</div></div>
         <div class="row"><div class="name">Gâteau du jour</div><div class="price">3,50 €</div></div>
       </article>
     </section>
 
-    <p class="smallnote">Prix indicatifs. Photos non contractuelles. Merci pour votre visite à La Perla 💙</p>
+    <p class="smallnote">Prix indicatifs. Merci pour votre visite à La Perla 💙</p>
   </main>
 
-  <!-- Option: changement rapide du plat du jour depuis l'URL (?plat=...&prix=...) -->
+  <!-- Mise à jour rapide via URL -->
   <script>
-    const params = new URLSearchParams(location.search);
-    if(params.get('plat')) document.getElementById('platJour').textContent = params.get('plat');
-    if(params.get('prix')) document.getElementById('prixJour').textContent = params.get('prix');
-    // Exemple: https://tonlien/menu-la-perla-v2.html?plat=Ojja%20Merguez&prix=10,90%20€
+    const p=new URLSearchParams(location.search);
+    if(p.get('plat')) document.getElementById('platJour').textContent=p.get('plat');
+    if(p.get('prix')) document.getElementById('prixJour').textContent=p.get('prix');
   </script>
 </body>
 </html>
