@@ -1,154 +1,235 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8" />
+<meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>La Perla – Menu (3 colonnes)</title>
+<title>La Perla – Menu</title>
 <style>
+  /* Palette */
   :root{
-    --bleu:#0A66B7; --bleu2:#0E89FF; --bleuProf:#003B73;
-    --or:#E6A23C; --blanc:#fff; --verre:rgba(255,255,255,.80);
-    --bord:rgba(10,102,183,.18); --radius:18px;
+    --beige:#FDF6ED;        /* fond doux comme le logo */
+    --bleu:#0A66B7;         /* Sidi Bou Saïd */
+    --bleu2:#0E89FF;
+    --bleuProf:#003B73;
+    --verre:rgba(255,255,255,.92);
+    --bord:rgba(10,102,183,.15);
   }
+
   *{box-sizing:border-box;margin:0;padding:0}
   html,body{height:100%}
   body{
     font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif;
-    color:var(--bleuProf); background:#eef6ff; overflow:hidden;
+    background: var(--beige);
+    color: var(--bleuProf);
+    overflow:hidden; /* écran TV */
   }
 
-  /* Fond motif animé Sidi Bou Saïd */
-  .bg{position:fixed; inset:0; z-index:-2;
+  /* Légère texture en fond */
+  .grain{
+    position:fixed; inset:0; pointer-events:none; z-index:0;
     background:
-      radial-gradient(circle at 25% 25%, rgba(255,255,255,.25), transparent 50%) 0 0/160px 160px,
-      radial-gradient(circle at 75% 75%, rgba(255,255,255,.25), transparent 50%) 0 0/160px 160px,
-      repeating-conic-gradient(from 45deg, rgba(10,102,183,.16) 0 25deg, transparent 25deg 50deg) 0 0/80px 80px,
-      linear-gradient(180deg,#f8fbff 0%, #eef6ff 100%);
-    animation:tiles 70s linear infinite;
+      radial-gradient(circle at 20% 15%, rgba(0,0,0,.03), transparent 35%) 0 0/600px 600px,
+      radial-gradient(circle at 80% 85%, rgba(0,0,0,.03), transparent 35%) 0 0/700px 700px;
+    opacity:.6;
   }
-  @keyframes tiles{0%{background-position:0 0,0 0,0 0,0 0}100%{background-position:200px 0,-200px 0,400px 300px,0 0}}
-  .veil{position:fixed; inset:0; z-index:-1; backdrop-filter:blur(2px)}
 
-  /* En-tête */
+  /* Bandeau haut avec logo */
   .header{
-    width:min(96vw,1920px); margin:1.6vh auto 1.2vh;
-    padding:1.2vh 1.4vw; background:var(--verre); border:1px solid var(--bord);
-    border-radius:var(--radius); display:flex; align-items:center; gap:1.2vw;
-    box-shadow:0 10px 30px rgba(0,0,0,.06);
+    width:min(96vw, 1920px);
+    margin:1.8vh auto 1.2vh;
+    display:flex; align-items:center; gap:1.2vw;
   }
-  .logo{max-height:9.5vh; width:auto; object-fit:contain; filter:drop-shadow(0 2px 2px rgba(0,0,0,.12))}
-  .ttl{flex:1}
-  .brand{font-weight:900; letter-spacing:.08em; color:var(--bleu); text-transform:uppercase;
-         font-size:clamp(28px,4.2vw,68px); line-height:1.05}
+  .logo{
+    max-height:10vh; width:auto; object-fit:contain;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.12));
+  }
+  .brand{
+    font-weight:900; letter-spacing:.08em; color:var(--bleu);
+    font-size:clamp(30px, 4.2vw, 70px); text-transform:uppercase; line-height:1.05;
+  }
   .sub{color:var(--bleu2); font-size:clamp(14px,1.5vw,22px)}
   .underline{height:6px; margin-top:.6vh; border-radius:6px;
     background:linear-gradient(90deg, transparent, var(--bleu2), transparent); position:relative; overflow:hidden}
   .underline::before{content:""; position:absolute; inset:0;
-    background:linear-gradient(90deg, transparent, rgba(255,255,255,.7), transparent);
-    transform:translateX(-100%); animation:shine 4s ease-in-out infinite}
-  @keyframes shine{0%{transform:translateX(-100%)}50%{transform:translateX(0)}100%{transform:translateX(100%)}}
+    background:linear-gradient(90deg, transparent, rgba(255,255,255,.9), transparent);
+    transform:translateX(-100%); animation:shine 6s ease-in-out infinite}
+  @keyframes shine{0%{transform:translateX(-110%)}50%{transform:translateX(0)}100%{transform:translateX(110%)}}
 
-  /* Zone colonnes */
-  .columns-wrap{
-    width:min(96vw,1920px); height:calc(100vh - 14.5vh); /* plein écran sous l’en-tête */
-    margin:0 auto 1.4vh; display:grid; gap:1.2vw;
-    grid-template-columns: 1fr 1fr 1fr;
+  /* Porte Sidi Bou Saïd (cadre) */
+  .porte-wrap{
+    width:min(96vw, 1920px);
+    height:calc(100vh - 14vh);
+    margin:0 auto;
+    position:relative;
   }
+
+  /* forme arche + décor */
+  .porte{
+    position: absolute; inset:0;
+    margin:auto;
+    background: var(--bleu);
+    border-radius: 48px 48px 20px 20px / 120px 120px 20px 20px; /* arche */
+    padding: 1.2vw;
+    box-shadow:
+      inset 0 0 0 8px #fff,         /* liseré blanc intérieur */
+      0 18px 40px rgba(0,0,0,.15);  /* ombre externe */
+  }
+
+  /* motif arabesque discret */
+  .porte::before{
+    content:"";
+    position:absolute; inset:10px;
+    border-radius: 40px 40px 16px 16px / 110px 110px 16px 16px;
+    background:
+      radial-gradient(circle at 30% 24%, rgba(255,255,255,.18), transparent 35%),
+      radial-gradient(circle at 70% 32%, rgba(255,255,255,.18), transparent 35%),
+      repeating-conic-gradient(from 0deg, rgba(255,255,255,.10) 0 16deg, transparent 16deg 32deg);
+    opacity:.65;
+    animation:glow 12s linear infinite;
+    pointer-events:none;
+  }
+  @keyframes glow{0%{transform:translateX(0)}100%{transform:translateX(40px)}}
+
+  /* Contenu à l’intérieur de la porte */
+  .contenu{
+    position:relative; z-index:2;
+    height:100%;
+    border-radius: 32px 32px 14px 14px / 90px 90px 14px 14px;
+    background: var(--verre);
+    backdrop-filter: blur(2px);
+    padding: 1.2vw;
+    display:grid; gap:1.2vw;
+    grid-template-columns:1fr 1fr 1fr;
+  }
+
+  /* Jasmin subtil (SVG) */
+  .jasmin{
+    position:absolute; z-index:1; pointer-events:none; opacity:.45;
+    filter: drop-shadow(0 2px 2px rgba(0,0,0,.08));
+  }
+  .jasmin.top{ top:-18px; right:24px; transform:scale(.9) }
+  .jasmin.bottom{ bottom:-10px; left:24px; transform:scale(1.1) }
+
+  /* Colonnes */
   .col{
-    background:var(--verre); border:1px solid var(--bord); border-radius:16px;
-    display:flex; flex-direction:column; padding:1.1vw; min-height:0; /* pour scroll interne */
-    box-shadow:0 10px 30px rgba(0,0,0,.06);
+    background:#fff; border:1px solid var(--bord); border-radius:14px;
+    display:flex; flex-direction:column; padding:1.1vw; min-height:0;
+    box-shadow:0 10px 24px rgba(0,0,0,.06);
   }
   .col h2{
     color:var(--bleu); text-transform:uppercase; letter-spacing:.06em;
     font-size:clamp(16px,2.1vw,30px);
     border-bottom:2px solid #EEF4FF; padding-bottom:.6vh; margin-bottom:.6vh;
   }
-  .list{overflow:auto; scrollbar-width:thin; padding-right:.5vw}
-  .item{display:flex; justify-content:space-between; gap:1vw; padding:.45vh 0; align-items:baseline}
-  .name{font-weight:700; font-size:clamp(14px,1.6vw,22px)}
+  .liste{overflow:auto; scrollbar-width:thin; padding-right:.4vw}
+  .ligne{display:flex; justify-content:space-between; gap:1vw; padding:.45vh 0; align-items:baseline}
+  .nom{font-weight:700; font-size:clamp(14px,1.6vw,22px)}
   .desc{font-size:clamp(11px,1.05vw,15px); color:#6D7C92}
-  .price{font-weight:900; font-size:clamp(14px,1.6vw,22px); color:var(--bleuProf); white-space:nowrap}
+  .prix{font-weight:900; font-size:clamp(14px,1.6vw,22px); color:var(--bleuProf); white-space:nowrap}
 
-  /* Plat du jour badge (dans la 3e colonne) */
+  /* Plat du jour badge */
   .daily{
-    display:flex; align-items:center; gap:.8vw; margin:.2vh 0 1vh;
-    padding:.7vh .8vw; border-radius:999px; background:#FFF6E6; border:2px solid #FACD8D;
-    width:max-content;
+    display:flex; align-items:center; gap:.8vw; margin:.1vh 0 1vh;
+    padding:.7vh .8vw; border-radius:999px; background:#FFF6E6; border:2px solid #FACD8D; width:max-content;
   }
   .daily b{color:#C87400; letter-spacing:.06em; text-transform:uppercase; font-size:clamp(12px,1.2vw,18px)}
   .daily .dname{font-weight:700; margin-left:.4vw; color:var(--bleuProf); font-size:clamp(12px,1.2vw,18px)}
   .daily .dprice{font-weight:900; color:var(--bleu); margin-left:.6vw; font-size:clamp(12px,1.2vw,18px)}
 
-  /* Sécurités responsive (si un jour affiché sur tablette) */
-  @media (max-width:1200px){ .columns-wrap{grid-template-columns:1fr 1fr; height:auto} body{overflow:auto} }
-  @media (max-width:800px){ .columns-wrap{grid-template-columns:1fr} }
+  /* Sécurités si plus petit */
+  @media (max-width:1200px){ body{overflow:auto} .contenu{grid-template-columns:1fr 1fr} }
+  @media (max-width:800px){ .contenu{grid-template-columns:1fr} }
 </style>
 </head>
 <body>
-  <div class="bg"></div><div class="veil"></div>
+  <div class="grain"></div>
 
-  <!-- En-tête -->
-  <header class="header">
-    <img class="logo" src="la-perla-logo.png" alt="La Perla Logo">
-    <div class="ttl">
+  <!-- Bandeau haut -->
+  <div class="header">
+    <img class="logo" src="la-perla-logo.png" alt="La Perla">
+    <div style="flex:1">
       <div class="brand">LA PERLA</div>
       <div class="sub">Saveurs authentiques de Tunisie · Bezons</div>
       <div class="underline"></div>
     </div>
-  </header>
+  </div>
 
-  <!-- 3 colonnes -->
-  <section class="columns-wrap">
-    <!-- Col 1 : Entrées -->
-    <div class="col">
-      <h2>Entrées</h2>
-      <div class="list">
-        <div class="item"><div><div class="name">Brik à l'œuf</div><div class="desc">Feuille croustillante, œuf, persil</div></div><div class="price">3,50 €</div></div>
-        <div class="item"><div><div class="name">Salade Mechouia</div><div class="desc">Poivrons grillés, tomate, ail</div></div><div class="price">4,50 €</div></div>
-        <div class="item"><div><div class="name">Salade Tunisienne</div><div class="desc">Tomate, concombre, oignon, olives</div></div><div class="price">4,90 €</div></div>
-        <div class="item"><div><div class="name">Frites maison</div></div><div class="price">3,00 €</div></div>
-        <!-- ajoute d'autres entrées ici -->
+  <!-- Porte + contenu -->
+  <div class="porte-wrap">
+    <div class="porte">
+      <!-- Jasmin (SVG) -->
+      <svg class="jasmin top" width="140" height="80" viewBox="0 0 140 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity=".9">
+          <path d="M20 50 C40 30, 60 25, 90 34" stroke="#85B86B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="96" cy="34" r="5" fill="#85B86B"/>
+          <g transform="translate(96,34)">
+            <g transform="scale(1.1)">
+              <path d="M0-12 L4-2 L14-2 L6,4 L9,14 L0,8 L-9,14 L-6,4 L-14,-2 L-4,-2 Z" fill="#FFFFFF"/>
+              <circle cx="0" cy="0" r="2.2" fill="#F3D7A6"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+      <svg class="jasmin bottom" width="180" height="90" viewBox="0 0 180 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g opacity=".9">
+          <path d="M10 70 C35 55, 70 52, 120 58" stroke="#85B86B" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="126" cy="58" r="5" fill="#85B86B"/>
+          <g transform="translate(126,58)">
+            <g transform="scale(1.2)">
+              <path d="M0-12 L4-2 L14-2 L6,4 L9,14 L0,8 L-9,14 L-6,4 L-14,-2 L-4,-2 Z" fill="#FFFFFF"/>
+              <circle cx="0" cy="0" r="2.2" fill="#F3D7A6"/>
+            </g>
+          </g>
+        </g>
+      </svg>
+
+      <!-- Intérieur de la porte -->
+      <div class="contenu">
+        <!-- Entrées -->
+        <section class="col">
+          <h2>Entrées</h2>
+          <div class="liste">
+            <div class="ligne"><div><div class="nom">Brik à l'œuf</div><div class="desc">Feuille croustillante, œuf, persil</div></div><div class="prix">3,50 €</div></div>
+            <div class="ligne"><div><div class="nom">Salade Mechouia</div><div class="desc">Poivrons grillés, tomate, ail</div></div><div class="prix">4,50 €</div></div>
+            <div class="ligne"><div><div class="nom">Salade Tunisienne</div><div class="desc">Tomate, concombre, oignon, olives</div></div><div class="prix">4,90 €</div></div>
+            <div class="ligne"><div class="nom">Frites maison</div><div class="prix">3,00 €</div></div>
+          </div>
+        </section>
+
+        <!-- Sandwichs -->
+        <section class="col">
+          <h2>Sandwichs & Makloub</h2>
+          <div class="liste">
+            <div class="ligne"><div><div class="nom">Makloub Poulet</div><div class="desc">Poulet mariné, frites, harissa, salade</div></div><div class="prix">7,50 €</div></div>
+            <div class="ligne"><div><div class="nom">Makloub Viande</div><div class="desc">Viande tendre, sauces maison</div></div><div class="prix">8,50 €</div></div>
+            <div class="ligne"><div><div class="nom">Mlewi Poulet</div><div class="desc">Galette maison, poulet mariné</div></div><div class="prix">7,90 €</div></div>
+            <div class="ligne"><div><div class="nom">Baguette Farcie Thon</div><div class="desc">Thon, œuf, mechouia</div></div><div class="prix">6,90 €</div></div>
+          </div>
+        </section>
+
+        <!-- Plats -->
+        <section class="col">
+          <h2>Plats</h2>
+          <div class="daily">
+            <b>Plat du jour</b>
+            <span class="dname" id="platJour">Couscous au poulet</span>
+            <span class="dprice" id="prixJour">9,90 €</span>
+          </div>
+          <div class="liste">
+            <div class="ligne"><div><div class="nom">Assiette Escalope</div><div class="desc">Viande + frites + salade</div></div><div class="prix">10,90 €</div></div>
+            <div class="ligne"><div><div class="nom">Assiette Mixte</div><div class="desc">Deux viandes, frites, salade</div></div><div class="prix">12,90 €</div></div>
+            <div class="ligne"><div><div class="nom">Ojja Merguez</div><div class="desc">Œufs en sauce tomate, merguez</div></div><div class="prix">10,50 €</div></div>
+          </div>
+        </section>
       </div>
     </div>
+  </div>
 
-    <!-- Col 2 : Sandwichs & Makloub -->
-    <div class="col">
-      <h2>Sandwichs & Makloub</h2>
-      <div class="list">
-        <div class="item"><div><div class="name">Makloub Poulet</div><div class="desc">Poulet mariné, frites, harissa, salade</div></div><div class="price">7,50 €</div></div>
-        <div class="item"><div><div class="name">Makloub Viande</div><div class="desc">Viande tendre, sauces maison</div></div><div class="price">8,50 €</div></div>
-        <div class="item"><div><div class="name">Mlewi Poulet</div><div class="desc">Galette maison, poulet mariné</div></div><div class="price">7,90 €</div></div>
-        <div class="item"><div><div class="name">Baguette Farcie Thon</div><div class="desc">Thon, œuf, mechouia</div></div><div class="price">6,90 €</div></div>
-        <!-- ajoute d'autres sandwichs ici -->
-      </div>
-    </div>
-
-    <!-- Col 3 : Plats (avec Plat du jour) -->
-    <div class="col">
-      <h2>Plats</h2>
-
-      <!-- Plat du jour -->
-      <div class="daily">
-        <b>Plat du jour</b>
-        <span class="dname" id="platJour">Couscous au poulet</span>
-        <span class="dprice" id="prixJour">9,90 €</span>
-      </div>
-
-      <div class="list">
-        <div class="item"><div><div class="name">Assiette Escalope</div><div class="desc">Viande + frites + salade</div></div><div class="price">10,90 €</div></div>
-        <div class="item"><div><div class="name">Assiette Mixte</div><div class="desc">Deux viandes, frites, salade</div></div><div class="price">12,90 €</div></div>
-        <div class="item"><div><div class="name">Ojja Merguez</div><div class="desc">Oeufs en sauce tomate, merguez</div></div><div class="price">10,50 €</div></div>
-        <!-- ajoute d'autres plats ici -->
-      </div>
-    </div>
-  </section>
-
-  <!-- Mise à jour rapide via URL : ?plat=...&prix=... -->
+  <!-- MAJ rapide via URL -->
   <script>
-    const p = new URLSearchParams(location.search);
-    if(p.get('plat')) document.getElementById('platJour').textContent = p.get('plat');
-    if(p.get('prix')) document.getElementById('prixJour').textContent = p.get('prix');
+    const p=new URLSearchParams(location.search);
+    if(p.get('plat')) document.getElementById('platJour').textContent=p.get('plat');
+    if(p.get('prix')) document.getElementById('prixJour').textContent=p.get('prix');
   </script>
 </body>
 </html>
