@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -9,7 +8,7 @@
     :root{
       --beige:#FDF6ED;
       --bleu:#0A66B7;
-      --bleu2:#0E89FF;
+      --bleuClair:#0E89FF;
       --bleuProf:#003B73;
       --bord:rgba(10,102,183,.18);
       --blanc:#ffffff;
@@ -17,11 +16,12 @@
 
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{height:100%}
+
     body{
       font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
       background:var(--beige);
       color:var(--bleuProf);
-      overflow:hidden;
+      overflow:hidden; /* pour l’écran TV */
     }
 
     .page{
@@ -30,17 +30,17 @@
       margin:0 auto;
       display:flex;
       flex-direction:column;
-      align-items:stretch;
       padding:2vh 2vw;
     }
 
-    /* Haut de page */
+    /* En-tête */
     .header{
       display:flex;
       align-items:center;
       gap:1.2vw;
       margin-bottom:2vh;
     }
+    /* Logo : mets la-perla-logo.png dans le même dossier */
     .logo{
       max-height:11vh;
       width:auto;
@@ -54,7 +54,7 @@
       color:var(--bleu);
     }
     .subtitle{
-      color:var(--bleu2);
+      color:var(--bleuClair);
       font-size:clamp(14px,1.6vw,22px);
       margin-top:.4vh;
     }
@@ -62,44 +62,59 @@
       margin-top:.6vh;
       height:6px;
       border-radius:6px;
-      background:linear-gradient(90deg,transparent,var(--bleu2),transparent);
+      background:linear-gradient(90deg,transparent,var(--bleuClair),transparent);
     }
 
-    /* Carte centrale “porte” */
-    .card{
+    /* Carte style porte Sidi Bou */
+    .porte{
       flex:1;
       margin-top:2vh;
+      background:var(--bleu);
+      border-radius:48px 48px 24px 24px / 120px 120px 24px 24px;
+      padding:1.4vw;
+      box-shadow:0 18px 40px rgba(0,0,0,.18);
+    }
+    .porte-inner{
+      height:100%;
+      border-radius:36px 36px 18px 18px / 100px 100px 18px 18px;
       background:var(--blanc);
-      border-radius:40px;
-      border:4px solid var(--bleu);
-      box-shadow:0 18px 40px rgba(0,0,0,.12);
       padding:3vh 3vw;
-      display:flex;
-      flex-direction:column;
+      border:4px solid var(--blanc);
+      position:relative;
+      overflow:hidden;
     }
 
-    .card-header{
-      text-align:center;
-      margin-bottom:2vh;
+    /* Petit motif jasmin en bas */
+    .jasmin{
+      position:absolute;
+      bottom:1.5vh;
+      right:2vw;
+      opacity:.8;
     }
-    .card-title{
-      font-size:clamp(26px,3vw,46px);
+    .jasmin svg{
+      height:46px;
+    }
+
+    .title{
+      text-align:center;
       text-transform:uppercase;
       letter-spacing:.12em;
-      color:var(--bleu);
+      font-size:clamp(26px,3vw,46px);
+      color:var(--bleuProf);
       font-weight:800;
     }
-    .card-sub{
-      font-size:clamp(14px,1.6vw,22px);
-      color:var(--bleuProf);
+    .date-text{
+      text-align:center;
       margin-top:.5vh;
+      font-size:clamp(14px,1.5vw,22px);
+      color:#6b7688;
     }
 
     .list{
-      margin-top:2vh;
+      margin-top:3vh;
       display:flex;
       flex-direction:column;
-      gap:1vh;
+      gap:1.2vh;
       font-size:clamp(18px,2.1vw,30px);
     }
     .item{
@@ -107,7 +122,7 @@
       justify-content:space-between;
       align-items:baseline;
       border-bottom:1px dashed rgba(0,0,0,.12);
-      padding-bottom:.4vh;
+      padding-bottom:.5vh;
     }
     .name{
       font-weight:600;
@@ -117,35 +132,25 @@
       white-space:nowrap;
       color:var(--bleuProf);
     }
-    .note{
-      margin-top:auto;
-      text-align:center;
-      font-size:clamp(12px,1.3vw,18px);
-      color:#737f91;
-    }
 
-    /* Petit motif jasmin en bas */
-    .jasmin{
-      margin-top:1vh;
-      display:flex;
-      justify-content:center;
-      opacity:.75;
-    }
-    .jasmin svg{
-      height:48px;
+    .note{
+      margin-top:2vh;
+      font-size:clamp(12px,1.3vw,18px);
+      text-align:left;
+      color:#6b7688;
     }
 
     @media (max-width:900px){
       body{overflow:auto}
-      .card{border-radius:24px;padding:2vh 4vw;}
+      .porte{border-radius:32px;padding:2vh 3vw;}
+      .porte-inner{padding:2vh 3vw;}
     }
   </style>
 </head>
 <body>
   <div class="page">
-    <!-- En-tête La Perla -->
+    <!-- En-tête -->
     <header class="header">
-      <!-- Mets ton fichier logo dans le même dossier sous ce nom -->
       <img src="la-perla-logo.png" alt="La Perla" class="logo">
       <div style="flex:1">
         <div class="brand">LA PERLA</div>
@@ -154,68 +159,68 @@
       </div>
     </header>
 
-    <!-- Carte Plats du jour -->
-    <main class="card">
-      <div class="card-header">
-        <div class="card-title">Plats du jour</div>
-        <div class="card-sub">Aujourd’hui</div>
-      </div>
+    <!-- Porte + plats du jour -->
+    <main class="porte">
+      <div class="porte-inner">
+        <div class="title">Plats du jour</div>
+        <div class="date-text">Aujourd’hui</div>
 
-      <div class="list">
-        <div class="item">
-          <div class="name">Couscous agneau</div>
-          <div class="price">15 €</div>
+        <div class="list">
+          <div class="item">
+            <div class="name">Couscous agneau</div>
+            <div class="price">15 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Pâtes agneau</div>
+            <div class="price">14 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Loubia agneau</div>
+            <div class="price">14 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Soupe agneau</div>
+            <div class="price">8 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Riz Jerbi</div>
+            <div class="price">12 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Petit pois agneau</div>
+            <div class="price">14 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Soupe lentille</div>
+            <div class="price">6 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Kafteji foie &amp; merguez</div>
+            <div class="price">11 €</div>
+          </div>
+          <div class="item">
+            <div class="name">Lablabi</div>
+            <div class="price">10 €</div>
+          </div>
         </div>
-        <div class="item">
-          <div class="name">Pâtes agneau</div>
-          <div class="price">14 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Loubia agneau</div>
-          <div class="price">14 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Soupe agneau</div>
-          <div class="price">8 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Nwasser poulet</div>
-          <div class="price">12 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Petit pois agneau</div>
-          <div class="price">14 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Soupe lentille</div>
-          <div class="price">6 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Kafteji foie & merguez</div>
-          <div class="price">11 €</div>
-        </div>
-        <div class="item">
-          <div class="name">Lablabi</div>
-          <div class="price">10 €</div>
-        </div>
-      </div>
 
-      <div class="note">
-        Service du midi & du soir – Plats faits maison, selon arrivage.
-      </div>
+        <div class="note">
+          Plats faits maison, selon arrivage – servis le midi et le soir.
+        </div>
 
-      <div class="jasmin">
-        <!-- petit jasmin stylisé -->
-        <svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
-          <path d="M10 30 C30 15, 60 15, 110 20" stroke="#85B86B" stroke-width="3" fill="none" stroke-linecap="round"/>
-          <g transform="translate(65,18)">
-            <circle r="5" fill="#85B86B"/>
-            <g transform="scale(1.2)">
-              <path d="M0-12 L4-2 L14-2 L6,4 L9,14 L0,8 L-9,14 L-6,4 L-14,-2 L-4,-2 Z" fill="#ffffff"/>
-              <circle r="2.2" fill="#F3D7A6"/>
+        <div class="jasmin">
+          <!-- petit jasmin stylisé -->
+          <svg viewBox="0 0 120 40" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 30 C30 15, 60 15, 110 20" stroke="#85B86B" stroke-width="3" fill="none" stroke-linecap="round"/>
+            <g transform="translate(65,18)">
+              <circle r="5" fill="#85B86B"/>
+              <g transform="scale(1.2)">
+                <path d="M0-12 L4-2 L14-2 L6,4 L9,14 L0,8 L-9,14 L-6,4 L-14,-2 L-4,-2 Z" fill="#ffffff"/>
+                <circle r="2.2" fill="#F3D7A6"/>
+              </g>
             </g>
-          </g>
-        </svg>
+          </svg>
+        </div>
       </div>
     </main>
   </div>
