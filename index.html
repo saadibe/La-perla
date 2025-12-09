@@ -171,6 +171,8 @@ body{
   letter-spacing:5px;
   font-size:18px;
   margin-bottom:12px;
+  color:#0b3c74;
+  font-weight:600;
 }
 .big{
   font-size:54px;
@@ -190,7 +192,7 @@ body{
 /* PRIX */
 .price{
   display:inline-block;
-  background:rgba(0,0,0,.65);
+  background:linear-gradient(135deg,#444,#666);
   color:white;
   padding:16px 30px;
   border-radius:50px;
@@ -213,7 +215,7 @@ body{
   flex:1;
   position:relative;
   border-radius:25px;
-  background-size:85%;
+  background-size:75%;
   background-position:center;
   background-repeat:no-repeat;
   background-color:#ffffff;
@@ -317,9 +319,11 @@ body{
   color:var(--rouge-noel);
   font-weight:bold;
 }
+
+/* NOTE RÉSERVATION SLIDE 1 */
 .resa-note{
   position:absolute;
-  bottom: -8vh;
+  bottom:-60px;
   left:60px;
   background:rgba(255,255,255,0.92);
   padding:10px 20px;
@@ -328,7 +332,6 @@ body{
   color:#0b3c74;
   box-shadow:0 6px 18px rgba(0,0,0,0.18);
 }
-
 .resa-note strong{
   color:#b4252a;
 }
@@ -375,9 +378,10 @@ body{
       <div class="image poulet"></div>
       <div class="image agneau"></div>
     </div>
-<div class="resa-note">
-  🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
-</div>
+
+    <div class="resa-note">
+      🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
+    </div>
   </section>
 
   <!-- SLIDE 2 : SANDWICH LIBANAIS -->
@@ -428,10 +432,10 @@ body{
             <li>Tabouna <span>8,00 €</span></li>
             <li>Makloub <span>8,00 €</span></li>
             <li>Libanais <span>9,00 €</span></li>
-	    <li>Baguette Farcie <span>9,00 €</span></li>
-	    <li>Cornet <span>9,00 €</span></li>
+            <li>Baguette Farcie <span>9,00 €</span></li>
+            <li>Cornet <span>9,00 €</span></li>
             <li>Kaftaji <span>8,00 €</span></li>
-	    <li>Kaftaji Mergez <span>10,00 €</span></li>
+            <li>Kaftaji Merguez <span>10,00 €</span></li>
           </ul>
         </div>
 
@@ -440,11 +444,11 @@ body{
           <ul>
             <li>Pizza Margherita <span>7,00 €</span></li>
             <li>Pizza thon <span>8,00 €</span></li>
-            <li>Pizza viande haché ou escalope <span>9,00 €</span></li>
+            <li>Pizza viande hachée ou escalope <span>9,00 €</span></li>
             <li>Ojja merguez <span>12,00 €</span></li>
-            <li>Palt Kaftaji <span>9,00 €</span></li>
+            <li>Plat Kaftaji <span>9,00 €</span></li>
             <li>Plat Kaftaji merguez <span>12,00 €</span></li>
-            <li>Plat Tunisien <span>9,00 €</span></li>
+            <li>Plat Tunisien <span>12,00 €</span></li>
           </ul>
 
           <h3>Desserts & boissons</h3>
