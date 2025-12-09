@@ -2,100 +2,336 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Plats du Jour - La Perla</title>
+<title>La Perla – Animation TV Noël</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <style>
-
-body {
-  margin: 0;
-  padding: 0;
-  font-family: system-ui, sans-serif;
-  background: radial-gradient(circle at top, #ffffff 0%, #f5efe3 40%, #eaddc8 100%);
-  color: #0f3f7f;
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-/* Bande décorative Sidi Bou Saïd */
-.top-border, .bottom-border {
-  position: absolute;
-  left: 0; right: 0;
-  height: 1vh;
-  background-image: linear-gradient(
-    to right,
-    #0f3f7f 0%,
-    #0f3f7f 10%,
-    transparent 10%,
-    transparent 20%
+/* COULEURS */
+:root{
+  --bleu:#0b3c74;
+  --bleu2:#1e63b6;
+  --blanc:#ffffff;
+  --doré:#c8a04a;
+  --rouge-noel:#b4252a;
+}
+
+body{
+  background:radial-gradient(circle at top,#ffffff 0%,#f4efe7 40%,#e8dbc9 100%);
+}
+
+/* BORDURES */
+.top-border,.bottom-border{
+  position:fixed;left:0;right:0;height:10px;
+  background:repeating-linear-gradient(
+    to right,var(--bleu),var(--bleu) 40px,transparent 40px,transparent 80px
   );
-  background-size: 5vh 1vh;
-  opacity: 0.7;
+  z-index:20;
 }
-.top-border { top: 1vh; }
-.bottom-border { bottom: 1vh; }
+.top-border{top:0}
+.bottom-border{bottom:0}
 
-/* Conteneur principal porte style Sidi Bou */
-.container {
-  width: 90%;
-  max-width: 1000px;
-  margin: 6vh auto;
-  background: white;
-  border: 1vh solid #0f3f7f;
-  border-radius: 3vh 3vh 5vh 5vh;
-  padding: 4vh 4vw;
-  text-align: center;
-  box-shadow:
-    0 1.5vh 3vh rgba(15, 63, 127, 0.3),
-    0 0 0 0.4vh rgba(15, 63, 127, 0.2);
-  position: relative;
+/* NEIGE */
+.snow{
+  pointer-events:none;
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:5;
 }
-
-/* Jasmin flottant */
-.jasmin {
-  position: absolute;
-  font-size: 3vh;
-  opacity: 0.6;
-  animation: float 6s ease-in-out infinite;
+.snow span{
+  position:absolute;
+  top:-10vh;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.9);
+  animation:fall 12s linear infinite;
+  filter:blur(0.5px);
 }
-.j1 { top: 6%; left: 6%; }
-.j2 { top: 12%; right: 6%; animation-delay: 2s; }
-.j3 { bottom: 10%; left: 12%; animation-delay: 4s; }
-.j4 { bottom: 6%; right: 10%; animation-delay: 1s; }
+.snow span:nth-child(1){left:10%;animation-duration:11s;}
+.snow span:nth-child(2){left:25%;animation-duration:13s;animation-delay:2s;}
+.snow span:nth-child(3){left:40%;animation-duration:10s;animation-delay:4s;}
+.snow span:nth-child(4){left:55%;animation-duration:12s;animation-delay:1s;}
+.snow span:nth-child(5){left:70%;animation-duration:14s;animation-delay:3s;}
+.snow span:nth-child(6){left:85%;animation-duration:11s;animation-delay:5s;}
 
-@keyframes float {
-  0% { transform: translateY(0); opacity: 0.6; }
-  50% { transform: translateY(-1.5vh); opacity: 1; }
-  100% { transform: translateY(0); opacity: 0.6; }
+@keyframes fall{
+  0%{transform:translateY(0);opacity:0;}
+  10%{opacity:1;}
+  90%{transform:translateY(110vh);opacity:1;}
+  100%{opacity:0;}
 }
 
-/* Titres */
-h1 {
-  font-size: 5vh;
-  margin-bottom: 2vh;
-  color: #0f3f7f;
-  letter-spacing: 0.2vh;
+/* LOGO */
+.logo{
+  position:fixed;
+  top:12px;
+  left:20px;
+  z-index:30;
+}
+.logo img{
+  height:90px;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));
+  border-radius:999px;
+}
+.logo-badge{
+  position:absolute;
+  top:-5px;
+  right:-5px;
+  width:32px;height:32px;
+  border-radius:50%;
+  background:var(--rouge-noel);
+  border:2px solid #fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:18px;
+  color:#fff;
+  box-shadow:0 3px 8px rgba(0,0,0,.4);
 }
 
-.list {
-  margin-top: 3vh;
+/* SLIDES CONTAINER */
+.slides{
+  position:absolute;
+  inset:40px;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.3);
 }
 
-.item {
-  display: flex;
-  justify-content: space-between;
-  font-size: 3.2vh;
-  padding: 1.2vh 0;
-  border-bottom: 0.2vh solid rgba(0,0,0,0.1);
+/* SLIDE GLOBAL */
+.slide{
+  position:absolute;
+  inset:0;
+  display:flex;
+  padding:50px;
+  gap:40px;
+  opacity:0;
+  animation:slideFade 90s infinite; /* ~30 s par slide */
 }
 
-.price {
-  font-weight: bold;
+/* SLIDE 1 : FIN D'ANNÉE */
+.slide.fete{
+  background:
+    radial-gradient(circle at top left, rgba(180,37,42,0.18) 0%, transparent 45%),
+    radial-gradient(circle at top right, rgba(255,215,0,0.18) 0%, transparent 50%),
+    radial-gradient(circle at top left,#fff5f5 0%,#ffffff 35%,#f1e2d2 100%);
+  color:var(--bleu);
+  animation-delay:0s;
+  position:relative;
+}
+.slide.fete::before{
+  content:"🎄 ✨ 🎁";
+  position:absolute;
+  top:25px;
+  right:40px;
+  font-size:28px;
 }
 
-.time {
-  margin-top: 3vh;
-  font-size: 2.2vh;
-  color: #444;
+/* SLIDE 2 : LIBANAIS */
+.slide.libanais{
+  background:linear-gradient(135deg,var(--bleu),var(--bleu2),var(--bleu));
+  color:white;
+  animation-delay:30s;
 }
 
+/* SLIDE 3 : CARTE (fond beige + bandeau bleu) */
+.slide.carte{
+  background:#f6efe6;
+  color:var(--bleu);
+  animation-delay:60s;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+/* ANIMATION SLIDES */
+@keyframes slideFade{
+  0%{opacity:0}
+  3%{opacity:1}
+  30%{opacity:1}
+  33%{opacity:0}
+  100%{opacity:0}
+}
+
+/* TEXTE GÉNÉRAL SLIDES 1 & 2 */
+.text{
+  flex:1.1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+.small{
+  letter-spacing:5px;
+  font-size:18px;
+  margin-bottom:12px;
+}
+.big{
+  font-size:54px;
+  font-weight:bold;
+  margin-bottom:20px;
+}
+.desc{
+  font-size:22px;
+  margin-bottom:20px;
+}
+.list{
+  font-size:22px;
+  line-height:1.6;
+  margin-bottom:25px;
+}
+
+/* PRIX */
+.price{
+  display:inline-block;
+  background:rgba(0,0,0,.65);
+  color:white;
+  padding:16px 30px;
+  border-radius:50px;
+  border:2px solid rgba(255,255,255,0.6);
+}
+.price span{
+  font-size:48px;
+  font-weight:bold;
+  margin-right:10px;
+}
+
+/* IMAGES (slides 1 & 2) */
+.images{
+  flex:1;
+  display:flex;
+  gap:20px;
+}
+
+.image{
+  flex:1;
+  position:relative;
+  border-radius:25px;
+  background-size:85%;
+  background-position:center;
+  background-repeat:no-repeat;
+  background-color:#ffffff;
+  box-shadow:0 15px 40px rgba(0,0,0,.35);
+}
+.image::after{
+  content:"";
+  position:absolute;
+  inset:12px;
+  border:5px solid white;
+  border-bottom:none;
+  border-radius:200px 200px 40px 40px;
+}
+
+/* IMAGES RÉELLES */
+.poulet{background-image:url("poulet-farci.jpg")}
+.agneau{background-image:url("souris-agneau.jpg")}
+.wrap{background-image:url("libanais-wrap.jpg")}
+
+/* -------- SLIDE 3 : MENU STYLE IMAGE -------- */
+
+.menu-zone{
+  flex:1;
+  padding:40px 60px;
+}
+
+.menu-columns{
+  display:flex;
+  gap:40px;
+}
+
+.menu-col{
+  flex:1;
+  font-size:20px;
+  color:#0b3c74;
+}
+
+.menu-col h3{
+  font-size:22px;
+  margin-bottom:12px;
+  border-bottom:2px solid #0b3c74;
+  padding-bottom:6px;
+}
+
+.menu-col ul{
+  list-style:none;
+  margin-bottom:20px;
+}
+
+.menu-col li{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:6px;
+}
+
+.menu-col li span{
+  color:#c8a04a;
+  font-weight:700;
+}
+
+/* BANDEAU BLEU BAS */
+.menu-footer{
+  background:linear-gradient(135deg,#0b3c74,#1e63b6);
+  padding:24px 60px 26px;
+  color:white;
+}
+
+.menu-footer-inner{
+  max-width:100%;
+}
+
+.footer-small{
+  letter-spacing:5px;
+  font-size:16px;
+  opacity:.9;
+}
+
+.footer-title{
+  font-size:40px;
+  font-weight:800;
+  margin:6px 0;
+}
+
+.footer-sub{
+  font-size:20px;
+  opacity:.95;
+}
+
+/* FOOTER GLOBAL */
+.footer{
+  position:fixed;
+  bottom:15px;
+  right:30px;
+  background:white;
+  padding:10px 22px;
+  border-radius:40px;
+  font-size:16px;
+  box-shadow:0 6px 20px rgba(0,0,0,.2);
+}
+.footer span{
+  color:var(--rouge-noel);
+  font-weight:bold;
+}
+.resa-note{
+  position:absolute;
+  bottom: -8vh;
+  left:60px;
+  background:rgba(255,255,255,0.92);
+  padding:10px 20px;
+  border-radius:22px;
+  font-size:17px;
+  color:#0b3c74;
+  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+}
+
+.resa-note strong{
+  color:#b4252a;
+}
 </style>
 </head>
 
@@ -104,42 +340,141 @@ h1 {
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 
-<div class="container">
+<!-- NEIGE -->
+<div class="snow">
+  <span></span><span></span><span></span>
+  <span></span><span></span><span></span>
+</div>
 
-  <div class="jasmin j1">✺</div>
-  <div class="jasmin j2">✺</div>
-  <div class="jasmin j3">✺</div>
-  <div class="jasmin j4">✺</div>
+<!-- LOGO + BADGE NOËL -->
+<div class="logo">
+  <img src="logo-la-perla.png" alt="La Perla">
+  <div class="logo-badge">🎅</div>
+</div>
 
-  <h1>Plats du Jour</h1>
+<div class="slides">
 
-  <div class="list">
-    <div class="item"><span>Couscous Poisson</span><span class="price">18 €</span></div>
-    <div class="item"><span>Pâtes Agneau</span><span class="price">14 €</span></div>
-    <div class="item"><span>Pâtes Poulet</span><span class="price">12 €</span></div>
-    <div class="item"><span>Couscous Agneau</span><span class="price">15 €</span></div>
-    <div class="item"><span>Soupe Lentilles</span><span class="price">6 €</span></div>
-    <div class="item"><span>Riz Jerbi</span><span class="price">12 €</span></div>
-    <div class="item"><span>Soupe Poulpe</span><span class="price">8 €</span></div>
-    <div class="item"><span>Kaftaji Merguez</span><span class="price">11 €</span></div>
-    <div class="item"><span>Lablabi</span><span class="price">10 €</span></div>
-    <div class="item"><span>Lablabi Hargma</span><span class="price">13 €</span></div>
-  </div>
+  <!-- SLIDE 1 : FIN D'ANNÉE -->
+  <section class="slide fete">
+    <div class="text">
+      <div class="small">REPAS DE FIN D'ANNÉE</div>
+      <div class="big">Menu spécial fêtes</div>
+      <div class="desc">Plats généreux & traditionnels</div>
 
-  <div class="time" id="timeDisplay"></div>
+      <div class="list">
+        🍗 Poulet farci au riz parfumé<br>
+        🍖 Souris d’agneau fondante, cuisson lente
+      </div>
+
+      <div class="price">
+        <span>18 €</span> À emporter / Sur place
+      </div>
+    </div>
+
+    <div class="images">
+      <div class="image poulet"></div>
+      <div class="image agneau"></div>
+    </div>
+<div class="resa-note">
+  🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
+</div>
+  </section>
+
+  <!-- SLIDE 2 : SANDWICH LIBANAIS -->
+  <section class="slide libanais">
+    <div class="text">
+      <div class="small">NOUVEAUTÉ LIBANAISE</div>
+      <div class="big">Sandwich libanais</div>
+      <div class="desc">Gourmand & préparé minute</div>
+
+      <div class="list">
+        🌯 Sandwich bien garni<br>
+        🥗 Crudités fraîches & sauce maison
+      </div>
+
+      <div class="price">
+        <span>9 €</span> À emporter / Sur place
+      </div>
+    </div>
+
+    <div class="images">
+      <div class="image wrap"></div>
+    </div>
+  </section>
+
+  <!-- SLIDE 3 : CARTE COMPLÈTE AVEC BANDEAU BLEU -->
+  <section class="slide carte">
+
+    <!-- ZONE MENU -->
+    <div class="menu-zone">
+      <div class="menu-columns">
+
+        <div class="menu-col">
+          <h3>Entrées</h3>
+          <ul>
+            <li>Brick thon à l’œuf <span>3,00 €</span></li>
+            <li>Fricassée tunisienne <span>3,00 €</span></li>
+            <li>Salade méchouia <span>7,00 €</span></li>
+            <li>Salade tunisienne <span>7,00 €</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-col">
+          <h3>Sandwichs</h3>
+          <ul>
+            <li>Chapati <span>6,00 €</span></li>
+            <li>Chapati Mahdia <span>8,00 €</span></li>
+            <li>Mléwi <span>7,00 €</span></li>
+            <li>Tabouna <span>8,00 €</span></li>
+            <li>Makloub <span>8,00 €</span></li>
+            <li>Libanais <span>9,00 €</span></li>
+	    <li>Baguette Farcie <span>9,00 €</span></li>
+	    <li>Cornet <span>9,00 €</span></li>
+            <li>Kaftaji <span>8,00 €</span></li>
+	    <li>Kaftaji Mergez <span>10,00 €</span></li>
+          </ul>
+        </div>
+
+        <div class="menu-col">
+          <h3>Pizzas & plats</h3>
+          <ul>
+            <li>Pizza Margherita <span>7,00 €</span></li>
+            <li>Pizza thon <span>8,00 €</span></li>
+            <li>Pizza viande haché ou escalope <span>9,00 €</span></li>
+            <li>Ojja merguez <span>12,00 €</span></li>
+            <li>Palt Kaftaji <span>9,00 €</span></li>
+            <li>Plat Kaftaji merguez <span>12,00 €</span></li>
+            <li>Plat Tunisien <span>9,00 €</span></li>
+          </ul>
+
+          <h3>Desserts & boissons</h3>
+          <ul>
+            <li>Assida zgougou <span>4,90 €</span></li>
+            <li>Sodas / Eau <span>1,80 €</span></li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- BANDEAU BLEU BAS -->
+    <div class="menu-footer">
+      <div class="menu-footer-inner">
+        <div class="footer-small">CARTE LA PERLA</div>
+        <div class="footer-title">Toute notre carte</div>
+        <div class="footer-sub">
+          Entrées · Sandwichs tunisiens · Pizzas & plats · Desserts & boissons
+        </div>
+      </div>
+    </div>
+
+  </section>
 
 </div>
 
-<script>
-function updateTime() {
-  const now = new Date();
-  const options = { hour: "2-digit", minute: "2-digit" };
-  document.getElementById("timeDisplay").textContent =
-    "Mis à jour : " + now.toLocaleTimeString("fr-FR", options);
-}
-updateTime();
-setInterval(updateTime, 60000);
-</script>
+<div class="footer">
+  <span>Joyeuses fêtes</span> · Spécial fin d'année, nouveautés & carte · La Perla
+</div>
 
 </body>
 </html>
