@@ -189,6 +189,14 @@ body{
   margin-bottom:25px;
 }
 
+/* PRIX + NOTE RESA */
+.price-wrapper{
+  margin-top:10px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+
 /* PRIX */
 .price{
   display:inline-block;
@@ -202,6 +210,21 @@ body{
   font-size:48px;
   font-weight:bold;
   margin-right:10px;
+}
+
+/* NOTE RÉSERVATION SLIDE 1 */
+.resa-note{
+  display:inline-block;
+  align-self:flex-start;
+  background:rgba(255,255,255,0.95);
+  padding:8px 18px;
+  border-radius:22px;
+  font-size:17px;
+  color:#0b3c74;
+  box-shadow:0 4px 14px rgba(0,0,0,0.18);
+}
+.resa-note strong{
+  color:#b4252a;
 }
 
 /* IMAGES (slides 1 & 2) */
@@ -320,20 +343,111 @@ body{
   font-weight:bold;
 }
 
-/* NOTE RÉSERVATION SLIDE 1 */
-.resa-note{
-  position:absolute;
-  bottom:-60px;
-  left:60px;
-  background:rgba(255,255,255,0.92);
-  padding:10px 20px;
-  border-radius:22px;
-  font-size:17px;
-  color:#0b3c74;
-  box-shadow:0 6px 18px rgba(0,0,0,0.18);
+/* ----------------- RESPONSIVE ----------------- */
+
+/* Tablettes / écrans moyens */
+@media (max-width: 1024px){
+  .slides{
+    inset:20px;
+  }
+  .slide{
+    padding:30px;
+    gap:24px;
+  }
+  .big{font-size:40px;}
+  .desc{font-size:18px;}
+  .list{font-size:18px;}
+  .price span{font-size:38px;}
+  .menu-zone{
+    padding:30px 30px 20px;
+  }
 }
-.resa-note strong{
-  color:#b4252a;
+
+/* Téléphone / petit écran */
+@media (max-width: 768px){
+  html,body{
+    height:auto;
+    overflow-y:auto;
+  }
+  .top-border,.bottom-border,
+  .snow,
+  .footer{
+    display:none;      /* on simplifie sur mobile */
+  }
+  .logo{
+    position:static;
+    margin:10px auto 0;
+    text-align:center;
+  }
+  .logo img{
+    height:70px;
+  }
+  .slides{
+    position:static;
+    inset:0;
+    margin:10px;
+    box-shadow:none;
+    border-radius:20px;
+  }
+  .slide{
+    position:static;
+    opacity:1;
+    animation:none;    /* pas de slide auto sur mobile */
+    flex-direction:column;
+    padding:20px;
+  }
+  .images{
+    order:-1;
+    margin-bottom:15px;
+  }
+  .image{
+    min-height:180px;
+    background-size:80%;
+  }
+  .small{
+    font-size:14px;
+    letter-spacing:3px;
+  }
+  .big{
+    font-size:30px;
+  }
+  .desc,.list{
+    font-size:16px;
+  }
+  .price{
+    padding:10px 18px;
+  }
+  .price span{
+    font-size:28px;
+  }
+  .resa-note{
+    font-size:14px;
+    padding:6px 14px;
+  }
+
+  /* Slide 3 : menu en colonnes empilées */
+  .menu-zone{
+    padding:20px 16px;
+  }
+  .menu-columns{
+    flex-direction:column;
+    gap:18px;
+  }
+  .menu-col{
+    font-size:16px;
+  }
+  .menu-col h3{
+    font-size:18px;
+  }
+  .menu-footer{
+    padding:18px 16px 20px;
+  }
+  .footer-title{
+    font-size:26px;
+  }
+  .footer-sub{
+    font-size:16px;
+  }
 }
 </style>
 </head>
@@ -369,18 +483,19 @@ body{
         🍖 Souris d’agneau fondante, cuisson lente
       </div>
 
-      <div class="price">
-        <span>18 €</span> À emporter / Sur place
+      <div class="price-wrapper">
+        <div class="price">
+          <span>18 €</span> À emporter / Sur place
+        </div>
+        <div class="resa-note">
+          🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
+        </div>
       </div>
     </div>
 
     <div class="images">
       <div class="image poulet"></div>
       <div class="image agneau"></div>
-    </div>
-
-    <div class="resa-note">
-      🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
     </div>
   </section>
 
