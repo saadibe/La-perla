@@ -339,7 +339,7 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,.2);
 }
 .footer span{
-  color:var(--rouge-noel);
+  color:#rouge-noel;
   font-weight:bold;
 }
 
@@ -365,43 +365,25 @@ body{
 
 /* Téléphone / petit écran */
 @media (max-width: 768px){
-  html,body{
-    height:auto;
-    overflow-y:auto;
-  }
-  .top-border,.bottom-border,
-  .snow,
-  .footer{
-    display:none;      /* on simplifie sur mobile */
-  }
+  /* on garde les slides animés, on ajuste juste les tailles */
   .logo{
-    position:static;
-    margin:10px auto 0;
-    text-align:center;
+    top:8px;
+    left:8px;
   }
   .logo img{
     height:70px;
   }
   .slides{
-    position:static;
-    inset:0;
-    margin:10px;
-    box-shadow:none;
-    border-radius:20px;
+    inset:20px;
   }
   .slide{
-    position:static;
-    opacity:1;
-    animation:none;    /* pas de slide auto sur mobile */
-    flex-direction:column;
     padding:20px;
+    gap:18px;
   }
   .images{
-    order:-1;
-    margin-bottom:15px;
+    gap:12px;
   }
   .image{
-    min-height:180px;
     background-size:80%;
   }
   .small{
