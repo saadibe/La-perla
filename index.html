@@ -339,7 +339,7 @@ body{
   box-shadow:0 6px 20px rgba(0,0,0,.2);
 }
 .footer span{
-  color:#rouge-noel;
+  color:var(--rouge-noel);
   font-weight:bold;
 }
 
@@ -365,7 +365,6 @@ body{
 
 /* Téléphone / petit écran */
 @media (max-width: 768px){
-  /* on garde les slides animés, on ajuste juste les tailles */
   .logo{
     top:8px;
     left:8px;
@@ -576,6 +575,40 @@ body{
 <div class="footer">
   <span>Joyeuses fêtes</span> · Spécial fin d'année, nouveautés & carte · La Perla
 </div>
+
+<!-- WAKE LOCK POUR GARDER L'ÉCRAN ALLUMÉ -->
+<script>
+  let wakeLock = null;
+
+  async function requestWakeLock() {
+    try {
+      if ('wakeLock' in navigator) {
+        // Demande à garder l'écran allumé
+        wakeLock = await navigator.wakeLock.request('screen');
+
+        wakeLock.addEventListener('release', () => {
+          console.log('Wake Lock relâché');
+        });
+
+        console.log('Wake Lock actif');
+      } else {
+        console.log('Wake Lock API non supportée');
+      }
+    } catch (err) {
+      console.error('Wake Lock erreur :', err.name, err.message);
+    }
+  }
+
+  // Si on revient sur la page (par ex. après retour à l'accueil)
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible') {
+      requestWakeLock();
+    }
+  });
+
+  // Active dès le chargement de la page
+  requestWakeLock();
+</script>
 
 </body>
 </html>
