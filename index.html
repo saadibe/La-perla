@@ -1,434 +1,323 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>La Perla – Animation TV Noël</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>La Perla – TV</title>
 
 <style>
+/* ================== BASE ================== */
 *{margin:0;padding:0;box-sizing:border-box}
-html,body{
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  font-family:Arial,Helvetica,sans-serif;
-}
-
-/* COULEURS */
+html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif}
 :root{
-  --bleu:#0b3c74;
-  --bleu2:#1e63b6;
-  --blanc:#ffffff;
-  --doré:#c8a04a;
-  --rouge-noel:#b4252a;
-}
+  --bleu:#0A66B7;
+  --bleu-fonce:#0b3c74;
+  --beige:#f6efe3;
+  --or:#c8a04a;
+  --blanc:#fff;
 
+  /* timings */
+  --t1:8s;     /* porte (5s fermée + 3s ouverte) */
+  --t2:12s;    /* nouveau produit */
+  --t3:20s;    /* menu */
+  --loop:40s;  /* total = 8+12+20 */
+}
 body{
-  background:radial-gradient(circle at top,#ffffff 0%,#f4efe7 40%,#e8dbc9 100%);
+  background:radial-gradient(circle at top,#ffffff 0%,#f4efe7 45%,#e7dcc9 100%);
 }
 
-/* BORDURES */
+/* ================== BORDURES HAUT/BAS ================== */
 .top-border,.bottom-border{
-  position:fixed;left:0;right:0;height:10px;
+  position:fixed;left:0;right:0;height:10px;z-index:100;
   background:repeating-linear-gradient(
-    to right,var(--bleu),var(--bleu) 40px,transparent 40px,transparent 80px
+    to right,var(--bleu-fonce),var(--bleu-fonce) 40px,transparent 40px,transparent 80px
   );
-  z-index:20;
 }
 .top-border{top:0}
 .bottom-border{bottom:0}
 
-/* NEIGE */
-.snow{
-  pointer-events:none;
-  position:fixed;
-  inset:0;
-  overflow:hidden;
-  z-index:5;
-}
-.snow span{
-  position:absolute;
-  top:-10vh;
-  width:8px;height:8px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.9);
-  animation:fall 12s linear infinite;
-  filter:blur(0.5px);
-}
-.snow span:nth-child(1){left:10%;animation-duration:11s;}
-.snow span:nth-child(2){left:25%;animation-duration:13s;animation-delay:2s;}
-.snow span:nth-child(3){left:40%;animation-duration:10s;animation-delay:4s;}
-.snow span:nth-child(4){left:55%;animation-duration:12s;animation-delay:1s;}
-.snow span:nth-child(5){left:70%;animation-duration:14s;animation-delay:3s;}
-.snow span:nth-child(6){left:85%;animation-duration:11s;animation-delay:5s;}
-
-@keyframes fall{
-  0%{transform:translateY(0);opacity:0;}
-  10%{opacity:1;}
-  90%{transform:translateY(110vh);opacity:1;}
-  100%{opacity:0;}
-}
-
-/* LOGO */
+/* ================== LOGO ================== */
 .logo{
-  position:fixed;
-  top:12px;
-  left:20px;
-  z-index:30;
+  position:fixed;top:16px;left:18px;z-index:120;
 }
 .logo img{
-  height:90px;
-  filter:drop-shadow(0 4px 10px rgba(0,0,0,.4));
+  height:88px;width:auto;
   border-radius:999px;
-}
-.logo-badge{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  width:32px;height:32px;
-  border-radius:50%;
-  background:var(--rouge-noel);
-  border:2px solid #fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:18px;
-  color:#fff;
-  box-shadow:0 3px 8px rgba(0,0,0,.4);
+  background:transparent;       /* pas de contour forcé */
+  box-shadow:0 10px 24px rgba(0,0,0,.28);
 }
 
-/* SLIDES CONTAINER */
-.slides{
-  position:absolute;
-  inset:40px;
+/* ================== PILL FOOTER ================== */
+.footer-pill{
+  position:fixed;right:24px;bottom:18px;z-index:120;
+  background:rgba(255,255,255,.92);
+  padding:10px 16px;border-radius:999px;
+  box-shadow:0 10px 26px rgba(0,0,0,.18);
+  font-size:15px;color:var(--bleu-fonce);
+  backdrop-filter: blur(6px);
+}
+.footer-pill b{color:var(--bleu)}
+
+/* ================== ZONE D’AFFICHAGE (TV) ================== */
+.frame{
+  position:fixed;
+  top:42px; left:42px; right:42px; bottom:110px;
   border-radius:30px;
   overflow:hidden;
-  box-shadow:0 20px 60px rgba(0,0,0,.3);
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+  background:var(--blanc);
 }
 
-/* SLIDE GLOBAL */
+/* sur grand écran, laisser place au logo à gauche */
+@media (min-width:1200px){
+  .frame{left:190px}
+}
+
+/* ================== SLIDES ================== */
 .slide{
-  position:absolute;
-  inset:0;
-  display:flex;
-  padding:50px;
-  gap:40px;
-  opacity:0;
-  animation:slideFade 90s infinite; /* ~30 s par slide */
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;
 }
+.slide.s1{animation:s1 var(--loop) infinite}
+.slide.s2{animation:s2 var(--loop) infinite}
+.slide.s3{animation:s3 var(--loop) infinite}
 
-/* SLIDE 1 : FIN D'ANNÉE */
-.slide.fete{
-  background:
-    radial-gradient(circle at top left, rgba(180,37,42,0.18) 0%, transparent 45%),
-    radial-gradient(circle at top right, rgba(255,215,0,0.18) 0%, transparent 50%),
-    radial-gradient(circle at top left,#fff5f5 0%,#ffffff 35%,#f1e2d2 100%);
-  color:var(--bleu);
-  animation-delay:0s;
-  position:relative;
-}
-.slide.fete::before{
-  content:"🎄 ✨ 🎁";
-  position:absolute;
-  top:25px;
-  right:40px;
-  font-size:28px;
-}
-
-/* SLIDE 2 : LIBANAIS */
-.slide.libanais{
-  background:linear-gradient(135deg,var(--bleu),var(--bleu2),var(--bleu));
-  color:white;
-  animation-delay:30s;
-}
-
-/* SLIDE 3 : CARTE (fond beige + bandeau bleu) */
-.slide.carte{
-  background:#f6efe6;
-  color:var(--bleu);
-  animation-delay:60s;
-  flex-direction:column;
-  justify-content:space-between;
-}
-
-/* ANIMATION SLIDES */
-@keyframes slideFade{
+/* Timeline : porte 0–8s, produit 8–20s, menu 20–40s */
+@keyframes s1{
   0%{opacity:0}
-  3%{opacity:1}
-  30%{opacity:1}
-  33%{opacity:0}
+  2%{opacity:1}
+  20%{opacity:1}
+  22%{opacity:0}
+  100%{opacity:0}
+}
+@keyframes s2{
+  0%{opacity:0}
+  20%{opacity:0}
+  22%{opacity:1}
+  50%{opacity:1}
+  52%{opacity:0}
+  100%{opacity:0}
+}
+@keyframes s3{
+  0%{opacity:0}
+  50%{opacity:0}
+  52%{opacity:1}
+  98%{opacity:1}
   100%{opacity:0}
 }
 
-/* TEXTE GÉNÉRAL SLIDES 1 & 2 */
-.text{
-  flex:1.1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
+/* =========================================================
+   SLIDE 1 : PORTE PLEIN ÉCRAN (fermée -> ouverte)
+   ========================================================= */
+.slide-porte{
+  background:linear-gradient(180deg,#ffffff,var(--beige));
 }
-.small{
-  letter-spacing:5px;
-  font-size:18px;
-  margin-bottom:12px;
-  color:#0b3c74;
-  font-weight:600;
-}
-.big{
-  font-size:54px;
-  font-weight:bold;
-  margin-bottom:20px;
-}
-.desc{
-  font-size:22px;
-  margin-bottom:20px;
-}
-.list{
-  font-size:22px;
-  line-height:1.6;
-  margin-bottom:25px;
-}
-
-/* PRIX + NOTE RESA */
-.price-wrapper{
-  margin-top:10px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-}
-
-/* PRIX */
-.price{
-  display:inline-block;
-  background:linear-gradient(135deg,#444,#666);
-  color:white;
-  padding:16px 30px;
-  border-radius:50px;
-  border:2px solid rgba(255,255,255,0.6);
-}
-.price span{
-  font-size:48px;
-  font-weight:bold;
-  margin-right:10px;
-}
-
-/* NOTE RÉSERVATION SLIDE 1 */
-.resa-note{
-  display:inline-block;
-  align-self:flex-start;
-  background:rgba(255,255,255,0.95);
-  padding:8px 18px;
-  border-radius:22px;
-  font-size:17px;
-  color:#0b3c74;
-  box-shadow:0 4px 14px rgba(0,0,0,0.18);
-}
-.resa-note strong{
-  color:#b4252a;
-}
-
-/* IMAGES (slides 1 & 2) */
-.images{
-  flex:1;
-  display:flex;
-  gap:20px;
-}
-
-.image{
-  flex:1;
-  position:relative;
-  border-radius:25px;
-  background-size:75%;
+.door{
+  position:absolute;inset:0;
   background-position:center;
   background-repeat:no-repeat;
-  background-color:#ffffff;
-  box-shadow:0 15px 40px rgba(0,0,0,.35);
-}
-.image::after{
-  content:"";
-  position:absolute;
-  inset:12px;
-  border:5px solid white;
-  border-bottom:none;
-  border-radius:200px 200px 40px 40px;
+  background-size:cover;
+  opacity:0;
+  transform:scale(1.08);
 }
 
-/* IMAGES RÉELLES */
-.poulet{background-image:url("poulet-farci.jpg")}
-.agneau{background-image:url("souris-agneau.jpg")}
-.wrap{background-image:url("libanais-wrap.jpg")}
-
-/* -------- SLIDE 3 : MENU STYLE IMAGE -------- */
-
-.menu-zone{
-  flex:1;
-  padding:40px 60px;
+/* PORTE FERMÉE 0–5s => 0–12.5% de 40s */
+.door.closed{
+  background-image:url("porte-fermee.png");
+  animation:doorClosed var(--loop) infinite;
+}
+/* PORTE OUVERTE 5–8s => 12.5–20% */
+.door.open{
+  background-image:url("porte-ouverte.png");
+  animation:doorOpen var(--loop) infinite;
+}
+@keyframes doorClosed{
+  0%{opacity:0;transform:scale(1.1)}
+  2%{opacity:1}
+  12.5%{opacity:1;transform:scale(1)}
+  17%{opacity:0}
+  100%{opacity:0}
+}
+@keyframes doorOpen{
+  0%{opacity:0}
+  12.5%{opacity:0}
+  17%{opacity:1;transform:scale(1)}
+  20%{opacity:1;transform:scale(1.04)}
+  22%{opacity:0}
+  100%{opacity:0}
 }
 
-.menu-columns{
-  display:flex;
-  gap:40px;
+/* TEXTE : UNIQUEMENT APRÈS OUVERTURE */
+.open-text{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:flex-end;
+  padding-bottom:8vh;text-align:center;
+  color:var(--bleu-fonce);
+  text-shadow:0 14px 30px rgba(0,0,0,.22);
+  opacity:0;
+  animation:textShow var(--loop) infinite;
+}
+.open-text h1{
+  font-size:clamp(34px,5vw,74px);
+  font-weight:900;letter-spacing:.18em;
+}
+.open-text p{
+  margin-top:12px;
+  font-size:clamp(14px,2vw,24px);
+  letter-spacing:.22em;
+  color:#2c5a9a;
+}
+@keyframes textShow{
+  0%{opacity:0;transform:translateY(18px)}
+  12.5%{opacity:0;transform:translateY(18px)}
+  18%{opacity:1;transform:translateY(0)}
+  20%{opacity:1;transform:translateY(0)}
+  22%{opacity:0;transform:translateY(-6px)}
+  100%{opacity:0}
 }
 
-.menu-col{
-  flex:1;
-  font-size:20px;
-  color:#0b3c74;
+/* JASMIN SUBTIL (uniquement après ouverture) */
+.jasmin{
+  position:absolute;inset:0;pointer-events:none;
+  opacity:0;animation:jasminShow var(--loop) infinite;
+}
+@keyframes jasminShow{
+  0%{opacity:0}
+  12.5%{opacity:0}
+  18%{opacity:1}
+  22%{opacity:0}
+  100%{opacity:0}
+}
+.petal{
+  position:absolute;width:22px;height:22px;opacity:.85;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.10));
+  animation:float 3.8s ease-in-out infinite;
+}
+.petal:nth-child(1){left:18%;top:84%}
+.petal:nth-child(2){left:36%;top:88%;animation-delay:.6s}
+.petal:nth-child(3){left:55%;top:82%;animation-delay:1.2s}
+.petal:nth-child(4){left:72%;top:86%;animation-delay:.9s}
+.petal:nth-child(5){left:84%;top:80%;animation-delay:.3s}
+@keyframes float{
+  0%{transform:translateY(0) rotate(0deg);opacity:0}
+  22%{opacity:.85}
+  100%{transform:translateY(-220px) rotate(240deg);opacity:0}
+}
+.petal svg{width:100%;height:100%}
+
+/* =========================================================
+   SLIDE 2 : NOUVEAU PRODUIT (ton PNG)
+   ========================================================= */
+.slide-produit{
+  background:
+    radial-gradient(circle at top left, rgba(10,102,183,0.10) 0%, transparent 45%),
+    radial-gradient(circle at top right, rgba(200,160,74,0.12) 0%, transparent 50%),
+    radial-gradient(circle at top,#ffffff 0%,#f7f2ec 60%,#f1e6d3 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:52px;gap:42px;
+}
+.prod-left{flex:1.05;color:var(--bleu-fonce)}
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.9);
+  border:2px solid rgba(11,60,116,.15);
+  border-radius:999px;
+  padding:10px 14px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  margin-bottom:18px;
+  font-weight:900;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#2c5a9a;
+}
+.badge .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,#0b8b4b,#c62828);
+}
+.prod-title{
+  font-size:56px;font-weight:900;margin-bottom:12px;
+  color:var(--bleu-fonce);
+}
+.prod-sub{
+  font-size:22px;line-height:1.45;margin-bottom:18px;color:#234;
+  opacity:.92;
+}
+.prod-list{
+  font-size:22px;line-height:1.65;margin-bottom:22px;
+}
+.price{
+  display:inline-flex;align-items:baseline;gap:12px;
+  background:linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
+  color:#fff;border-radius:999px;
+  padding:14px 26px;
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
+  border:2px solid rgba(255,255,255,.55);
+}
+.price b{font-size:48px}
+.price span{font-size:18px;opacity:.95}
+
+.prod-right{
+  flex:1;display:flex;align-items:center;justify-content:center;
+}
+.prod-img-real{
+  max-width:42vw;
+  max-height:62vh;
+  object-fit:contain;
+  filter:drop-shadow(0 22px 44px rgba(0,0,0,.35));
+  animation:prodFloat 6s ease-in-out infinite;
+}
+@keyframes prodFloat{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-14px) scale(1.04)}
+  100%{transform:translateY(0) scale(1)}
 }
 
+/* =========================================================
+   SLIDE 3 : MENU (3 colonnes)
+   ========================================================= */
+.slide-menu{
+  background:linear-gradient(180deg,#fdf8ee,#f1e6d3);
+  display:flex;flex-direction:column;justify-content:space-between;
+}
+.menu-zone{flex:1;padding:34px 60px 26px}
+.menu-card{
+  background:#fff;border-radius:26px;padding:26px 28px 22px;
+  box-shadow:0 12px 35px rgba(0,0,0,.18);
+  border-top:6px solid var(--bleu-fonce);
+}
+.menu-head{margin-bottom:14px}
+.menu-tag{
+  font-size:14px;letter-spacing:4px;text-transform:uppercase;
+  color:#2c5a9a;margin-bottom:6px;font-weight:900;
+}
+.menu-title-main{font-size:34px;font-weight:900;margin-bottom:6px;color:var(--bleu-fonce)}
+.menu-sub{font-size:18px;color:#355;opacity:.9}
+
+.menu-columns{display:flex;gap:34px;margin-top:16px}
+.menu-col{flex:1;font-size:20px;color:var(--bleu-fonce)}
 .menu-col h3{
-  font-size:22px;
-  margin-bottom:12px;
-  border-bottom:2px solid #0b3c74;
-  padding-bottom:6px;
+  font-size:22px;margin-bottom:10px;
+  border-bottom:2px solid var(--bleu-fonce);padding-bottom:6px;
 }
+.menu-col ul{list-style:none;margin-bottom:14px}
+.menu-col li{display:flex;justify-content:space-between;margin-bottom:8px;gap:14px}
+.menu-col li span{color:var(--or);font-weight:900;white-space:nowrap}
 
-.menu-col ul{
-  list-style:none;
-  margin-bottom:20px;
-}
-
-.menu-col li{
-  display:flex;
-  justify-content:space-between;
-  margin-bottom:6px;
-}
-
-.menu-col li span{
-  color:#c8a04a;
-  font-weight:700;
-}
-
-/* BANDEAU BLEU BAS */
 .menu-footer{
-  background:linear-gradient(135deg,#0b3c74,#1e63b6);
-  padding:24px 60px 26px;
-  color:white;
+  background:linear-gradient(135deg,var(--bleu-fonce),#1e63b6);
+  padding:18px 60px 22px;color:#fff;
 }
+.footer-small{letter-spacing:5px;font-size:14px;opacity:.92;font-weight:800}
+.footer-title{font-size:24px;font-weight:900;margin:6px 0}
+.footer-sub{font-size:16px;opacity:.95}
 
-.menu-footer-inner{
-  max-width:100%;
-}
-
-.footer-small{
-  letter-spacing:5px;
-  font-size:16px;
-  opacity:.9;
-}
-
-.footer-title{
-  font-size:40px;
-  font-weight:800;
-  margin:6px 0;
-}
-
-.footer-sub{
-  font-size:20px;
-  opacity:.95;
-}
-
-/* FOOTER GLOBAL */
-.footer{
-  position:fixed;
-  bottom:15px;
-  right:30px;
-  background:white;
-  padding:10px 22px;
-  border-radius:40px;
-  font-size:16px;
-  box-shadow:0 6px 20px rgba(0,0,0,.2);
-}
-.footer span{
-  color:var(--rouge-noel);
-  font-weight:bold;
-}
-
-/* ----------------- RESPONSIVE ----------------- */
-
-/* Tablettes / écrans moyens */
-@media (max-width: 1024px){
-  .slides{
-    inset:20px;
-  }
-  .slide{
-    padding:30px;
-    gap:24px;
-  }
-  .big{font-size:40px;}
-  .desc{font-size:18px;}
-  .list{font-size:18px;}
-  .price span{font-size:38px;}
-  .menu-zone{
-    padding:30px 30px 20px;
-  }
-}
-
-/* Téléphone / petit écran */
-@media (max-width: 768px){
-  .logo{
-    top:8px;
-    left:8px;
-  }
-  .logo img{
-    height:70px;
-  }
-  .slides{
-    inset:20px;
-  }
-  .slide{
-    padding:20px;
-    gap:18px;
-  }
-  .images{
-    gap:12px;
-  }
-  .image{
-    background-size:80%;
-  }
-  .small{
-    font-size:14px;
-    letter-spacing:3px;
-  }
-  .big{
-    font-size:30px;
-  }
-  .desc,.list{
-    font-size:16px;
-  }
-  .price{
-    padding:10px 18px;
-  }
-  .price span{
-    font-size:28px;
-  }
-  .resa-note{
-    font-size:14px;
-    padding:6px 14px;
-  }
-
-  /* Slide 3 : menu en colonnes empilées */
-  .menu-zone{
-    padding:20px 16px;
-  }
-  .menu-columns{
-    flex-direction:column;
-    gap:18px;
-  }
-  .menu-col{
-    font-size:16px;
-  }
-  .menu-col h3{
-    font-size:18px;
-  }
-  .menu-footer{
-    padding:18px 16px 20px;
-  }
-  .footer-title{
-    font-size:26px;
-  }
-  .footer-sub{
-    font-size:16px;
-  }
+/* ================== RESPONSIVE (au cas où) ================== */
+@media (max-width:1100px){
+  .frame{left:16px;right:16px}
+  .slide-produit{flex-direction:column;text-align:center}
+  .prod-img-real{max-width:80vw;max-height:45vh}
+  .menu-columns{flex-direction:column}
 }
 </style>
 </head>
@@ -438,175 +327,129 @@ body{
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 
-<!-- NEIGE -->
-<div class="snow">
-  <span></span><span></span><span></span>
-  <span></span><span></span><span></span>
-</div>
-
-<!-- LOGO + BADGE NOËL -->
 <div class="logo">
   <img src="logo-la-perla.png" alt="La Perla">
-  <div class="logo-badge">🎅</div>
 </div>
 
-<div class="slides">
+<div class="footer-pill">
+  <b>La Perla</b> · Nouveauté & Menu
+</div>
 
-  <!-- SLIDE 1 : FIN D'ANNÉE -->
-  <section class="slide fete">
-    <div class="text">
-      <div class="small">REPAS DE FIN D'ANNÉE</div>
-      <div class="big">Menu spécial fêtes</div>
-      <div class="desc">Plats généreux & traditionnels</div>
+<div class="frame">
 
-      <div class="list">
-        🍗 Poulet farci au riz parfumé<br>
-        🍖 Souris d’agneau fondante, cuisson lente
-      </div>
+  <!-- SLIDE 1 : PORTE -->
+  <section class="slide s1 slide-porte">
+    <div class="door closed"></div>
+    <div class="door open"></div>
 
-      <div class="price-wrapper">
-        <div class="price">
-          <span>18 €</span> À emporter / Sur place
-        </div>
-        <div class="resa-note">
-          🙏 Merci de réserver — <strong>plats en quantité limitée</strong>
-        </div>
-      </div>
-    </div>
-
-    <div class="images">
-      <div class="image poulet"></div>
-      <div class="image agneau"></div>
+    <div class="jasmin">
+      <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M32 10c6 10 6 20 0 26-6-6-6-16 0-26Z" fill="#fff"/></svg></div>
+      <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M54 32c-10 6-20 6-26 0 6-6 16-6 26 0Z" fill="#fff"/></svg></div>
+      <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M32 54c-6-10-6-20 0-26 6 6 6 16 0 26Z" fill="#fff"/></svg></div>
+      <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M10 32c10-6 20-6 26 0-6 6-16 6-26 0Z" fill="#fff"/></svg></div>
+      <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M32 10c6 10 6 20 0 26-6-6-6-16 0-26Z" fill="#fff"/></svg></div>
     </div>
   </section>
 
-  <!-- SLIDE 2 : SANDWICH LIBANAIS -->
-  <section class="slide libanais">
-    <div class="text">
-      <div class="small">NOUVEAUTÉ LIBANAISE</div>
-      <div class="big">Sandwich libanais</div>
-      <div class="desc">Gourmand & préparé minute</div>
-
-      <div class="list">
-        🌯 Sandwich bien garni<br>
+  <!-- SLIDE 2 : NOUVEAU PRODUIT -->
+  <section class="slide s2 slide-produit">
+    <div class="prod-left">
+      <div class="badge"><span class="dot"></span> NOUVEAUTÉ</div>
+      <div class="prod-title">Sandwich Libanais</div>
+      <div class="prod-sub">Pain chaud, recette maison, goût authentique.</div>
+      <div class="prod-list">
+        🌯 Viande / poulet façon chawarma<br>
         🥗 Crudités fraîches & sauce maison
       </div>
-
-      <div class="price">
-        <span>9 €</span> À emporter / Sur place
-      </div>
+      <div class="price"><b>9€</b><span>Sur place / À emporter</span></div>
     </div>
 
-    <div class="images">
-      <div class="image wrap"></div>
+    <div class="prod-right">
+      <img class="prod-img-real" src="nouveau-produit.png" alt="Nouveau produit">
     </div>
   </section>
 
-  <!-- SLIDE 3 : CARTE COMPLÈTE AVEC BANDEAU BLEU -->
-  <section class="slide carte">
-
-    <!-- ZONE MENU -->
+  <!-- SLIDE 3 : MENU -->
+  <!-- SLIDE 3 : MENU -->
+  <section class="slide s3 slide-menu">
     <div class="menu-zone">
-      <div class="menu-columns">
-
-        <div class="menu-col">
-          <h3>Entrées</h3>
-          <ul>
-            <li>Brick thon à l’œuf <span>3,00 €</span></li>
-            <li>Fricassée tunisienne <span>3,00 €</span></li>
-            <li>Salade méchouia <span>7,00 €</span></li>
-            <li>Salade tunisienne <span>7,00 €</span></li>
-          </ul>
+      <div class="menu-card">
+        <div class="menu-head">
+          <div class="menu-tag">CARTE LA PERLA</div>
+          <div class="menu-title-main">Menu</div>
+          <div class="menu-sub">Entrées · Sandwichs · Plats</div>
         </div>
 
-        <div class="menu-col">
-          <h3>Sandwichs</h3>
-          <ul>
-            <li>Chapati <span>6,00 €</span></li>
-            <li>Chapati Mahdia <span>8,00 €</span></li>
-            <li>Mléwi <span>7,00 €</span></li>
-            <li>Tabouna <span>8,00 €</span></li>
-            <li>Makloub <span>8,00 €</span></li>
-            <li>Libanais <span>9,00 €</span></li>
-            <li>Baguette Farcie <span>9,00 €</span></li>
-            <li>Cornet <span>9,00 €</span></li>
-            <li>Kaftaji <span>8,00 €</span></li>
-            <li>Kaftaji Merguez <span>10,00 €</span></li>
-          </ul>
+        <div class="menu-columns">
+          <div class="menu-col">
+            <h3>Entrées</h3>
+            <ul>
+              <li>Brick à l’œuf <span>3 €</span></li>
+              <li>Fricassée <span>3 €</span></li>
+              <li>Salade Tunisienne ou salade mechwia <span>7 €</span></li>
+              <li>Frites maison <span>3 €</span></li>
+            </ul>
+          </div>
+
+          <div class="menu-col">
+            <h3>Sandwichs && Pizza</h3>
+            <ul>
+              <li>Makloub  <span>8 €</span></li>
+              <li>Baguette Farcie <span>9 €</span></li>
+	      <li>Cornet <span>9 €</span></li>
+              <li>Libanais <span>9 €</span></li>
+	      <li>Tabouna <span>8 €</span></li>
+	      <li>Chapatti Mahdia<span>8 €</span></li>
+	      <li>Chapatti <span>6 €</span></li>
+	      <li>Mlawi <span>7 €</span></li>
+	      <li>Sandwich Kaftajji <span>8 €</span></li>
+	      <li>Sandwich Tounsi <span>8 €</span></li>
+	      <li>Sandwich Escalope <span>8 €</span></li>
+            </ul>
+          </div>
+
+          <div class="menu-col">
+            <h3>Plats</h3>
+            <ul>
+              <li>Plat Kaftajji <span>9 €</span></li>
+              <li>Plat Kaftajji Mergez <span>12 €</span></li>
+              <li>Plat Tunisien <span>9 €</span></li>
+              <li>Ojja Merguez <span>10,50 €</span></li>
+            </ul>
+          </div>
+       <div class="menu-col">
+            <h3>Boissons</h3>
+            <ul>
+              <li>Eau minrale <span>1.8 €</span></li>
+              <li>Soudes <span>1.8 €</span></li>
+            </ul>
+          </div>
         </div>
-
-        <div class="menu-col">
-          <h3>Pizzas & plats</h3>
-          <ul>
-            <li>Pizza Margherita <span>7,00 €</span></li>
-            <li>Pizza thon <span>8,00 €</span></li>
-            <li>Pizza viande hachée ou escalope <span>9,00 €</span></li>
-            <li>Ojja merguez <span>12,00 €</span></li>
-            <li>Plat Kaftaji <span>9,00 €</span></li>
-            <li>Plat Kaftaji merguez <span>12,00 €</span></li>
-            <li>Plat Tunisien <span>12,00 €</span></li>
-          </ul>
-
-          <h3>Desserts & boissons</h3>
-          <ul>
-            <li>Assida zgougou <span>4,90 €</span></li>
-            <li>Sodas / Eau <span>1,80 €</span></li>
-          </ul>
-        </div>
-
       </div>
     </div>
 
-    <!-- BANDEAU BLEU BAS -->
     <div class="menu-footer">
-      <div class="menu-footer-inner">
-        <div class="footer-small">CARTE LA PERLA</div>
-        <div class="footer-title">Toute notre carte</div>
-        <div class="footer-sub">
-          Entrées · Sandwichs tunisiens · Pizzas & plats · Desserts & boissons
-        </div>
-      </div>
+      <div class="footer-small">LA PERLA · SAVEURS AUTHENTIQUES</div>
+      <div class="footer-title">Sur place ou à emporter</div>
+      <div class="footer-sub">Merci & bon appétit !</div>
     </div>
-
   </section>
 
 </div>
 
-<div class="footer">
-  <span>Joyeuses fêtes</span> · Spécial fin d'année, nouveautés & carte · La Perla
-</div>
-
-<!-- WAKE LOCK POUR GARDER L'ÉCRAN ALLUMÉ -->
 <script>
+  // Wake Lock (garder l’écran allumé)
   let wakeLock = null;
-
-  async function requestWakeLock() {
-    try {
-      if ('wakeLock' in navigator) {
-        // Demande à garder l'écran allumé
+  async function requestWakeLock(){
+    try{
+      if ('wakeLock' in navigator){
         wakeLock = await navigator.wakeLock.request('screen');
-
-        wakeLock.addEventListener('release', () => {
-          console.log('Wake Lock relâché');
-        });
-
-        console.log('Wake Lock actif');
-      } else {
-        console.log('Wake Lock API non supportée');
       }
-    } catch (err) {
-      console.error('Wake Lock erreur :', err.name, err.message);
-    }
+    }catch(e){}
   }
-
-  // Si on revient sur la page (par ex. après retour à l'accueil)
-  document.addEventListener('visibilitychange', () => {
-    if (document.visibilityState === 'visible') {
-      requestWakeLock();
-    }
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState === 'visible') requestWakeLock();
   });
-
-  // Active dès le chargement de la page
   requestWakeLock();
 </script>
 
