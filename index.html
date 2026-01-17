@@ -6,6 +6,7 @@
 <title>La Perla – TV</title>
 
 <style>
+/* ================== BASE ================== */
 *{margin:0;padding:0;box-sizing:border-box}
 html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,sans-serif}
 :root{
@@ -14,31 +15,39 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,san
   --beige:#f6efe3;
   --or:#c8a04a;
   --blanc:#fff;
-  --loop:40s;
+
+  /* timings */
+  --t1:8s;     /* porte (5s fermée + 3s ouverte) */
+  --t2:12s;    /* nouveau produit */
+  --t3:20s;    /* menu */
+  --loop:40s;  /* total = 8+12+20 */
 }
 body{
   background:radial-gradient(circle at top,#ffffff 0%,#f4efe7 45%,#e7dcc9 100%);
 }
 
-/* BORDURES */
+/* ================== BORDURES HAUT/BAS ================== */
 .top-border,.bottom-border{
   position:fixed;left:0;right:0;height:10px;z-index:100;
-  background:repeating-linear-gradient(to right,var(--bleu-fonce),var(--bleu-fonce) 40px,transparent 40px,transparent 80px);
+  background:repeating-linear-gradient(
+    to right,var(--bleu-fonce),var(--bleu-fonce) 40px,transparent 40px,transparent 80px
+  );
 }
 .top-border{top:0}
 .bottom-border{bottom:0}
 
-/* LOGO */
+/* ================== LOGO ================== */
 .logo{
-  position:fixed;top:14px;left:16px;z-index:120;
+  position:fixed;top:14px;left:14px;z-index:120;
 }
 .logo img{
-  height:110px;width:auto;border-radius:999px;
+  height:110px;width:auto;
+  border-radius:999px;
   background:transparent;
   box-shadow:0 10px 24px rgba(0,0,0,.28);
 }
 
-/* PILL */
+/* ================== PILL FOOTER ================== */
 .footer-pill{
   position:fixed;right:18px;bottom:14px;z-index:120;
   background:rgba(255,255,255,.92);
@@ -49,7 +58,7 @@ body{
 }
 .footer-pill b{color:var(--bleu)}
 
-/* ✅ ZONE TV PLEIN ÉCRAN */
+/* ================== ZONE D’AFFICHAGE (TV FULL) ================== */
 .frame{
   position:fixed;
   top:14px; left:14px; right:14px; bottom:14px;
@@ -59,8 +68,11 @@ body{
   background:var(--blanc);
 }
 
-/* SLIDES */
-.slide{position:absolute;inset:0;opacity:0;pointer-events:none}
+/* ================== SLIDES ================== */
+.slide{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;
+}
 .slide.s1{animation:s1 var(--loop) infinite}
 .slide.s2{animation:s2 var(--loop) infinite}
 .slide.s3{animation:s3 var(--loop) infinite}
@@ -89,58 +101,65 @@ body{
   100%{opacity:0}
 }
 
-/* ================== SLIDE 1 : PORTE ================== */
-.slide-porte{background:linear-gradient(180deg,#ffffff,var(--beige))}
+/* =========================================================
+   SLIDE 1 : PORTE PLEIN ÉCRAN (fermée -> ouverte)
+   ========================================================= */
+.slide-porte{
+  background:linear-gradient(180deg,#ffffff,var(--beige));
+}
 .door{
   position:absolute;inset:0;
   background-position:center;
   background-repeat:no-repeat;
   background-size:cover;
   opacity:0;
-  transform:scale(1.08);
+  transform:scale(1.04);
 }
+
+/* PORTE FERMÉE 0–5s */
 .door.closed{
   background-image:url("porte-fermee.png");
   animation:doorClosed var(--loop) infinite;
 }
+/* PORTE OUVERTE 5–8s */
 .door.open{
   background-image:url("porte-ouverte.png");
   animation:doorOpen var(--loop) infinite;
 }
 @keyframes doorClosed{
-  0%{opacity:0;transform:scale(1.1)}
+  0%{opacity:0;transform:scale(1.07)}
   2%{opacity:1}
-  12.5%{opacity:1;transform:scale(1)}
+  12.5%{opacity:1;transform:scale(1.03)}
   17%{opacity:0}
   100%{opacity:0}
 }
 @keyframes doorOpen{
   0%{opacity:0}
   12.5%{opacity:0}
-  17%{opacity:1;transform:scale(1)}
-  20%{opacity:1;transform:scale(1.04)}
+  17%{opacity:1;transform:scale(1.03)}
+  20%{opacity:1;transform:scale(1.05)}
   22%{opacity:0}
   100%{opacity:0}
 }
 
-/* Texte seulement quand porte ouverte */
+/* TEXTE : UNIQUEMENT APRÈS OUVERTURE */
 .open-text{
   position:absolute;inset:0;
   display:flex;flex-direction:column;
   align-items:center;justify-content:flex-end;
-  padding-bottom:8vh;text-align:center;
+  padding-bottom:7vh;text-align:center;
   color:var(--bleu-fonce);
   text-shadow:0 14px 30px rgba(0,0,0,.22);
   opacity:0;
   animation:textShow var(--loop) infinite;
 }
 .open-text h1{
-  font-size:clamp(40px,6vw,86px);
+  font-size:clamp(40px,5vw,86px);
   font-weight:900;letter-spacing:.18em;
 }
 .open-text p{
   margin-top:12px;
-  font-size:clamp(16px,2.2vw,28px);
+  font-size:clamp(16px,2vw,26px);
   letter-spacing:.22em;
   color:#2c5a9a;
 }
@@ -148,13 +167,16 @@ body{
   0%{opacity:0;transform:translateY(18px)}
   12.5%{opacity:0;transform:translateY(18px)}
   18%{opacity:1;transform:translateY(0)}
-  20%{opacity:1}
+  20%{opacity:1;transform:translateY(0)}
   22%{opacity:0;transform:translateY(-6px)}
   100%{opacity:0}
 }
 
-/* Jasmin subtil */
-.jasmin{position:absolute;inset:0;pointer-events:none;opacity:0;animation:jasminShow var(--loop) infinite}
+/* JASMIN SUBTIL (uniquement après ouverture) */
+.jasmin{
+  position:absolute;inset:0;pointer-events:none;
+  opacity:0;animation:jasminShow var(--loop) infinite;
+}
 @keyframes jasminShow{
   0%{opacity:0}
   12.5%{opacity:0}
@@ -179,19 +201,27 @@ body{
 }
 .petal svg{width:100%;height:100%}
 
-/* ================== SLIDE 2 : NOUVEAU PRODUIT (TV) ================== */
+/* =========================================================
+   SLIDE 2 : NOUVEAU PRODUIT (FULL TV, sans vide)
+   ========================================================= */
 .slide-produit{
   background:
-    radial-gradient(circle at top left, rgba(10,102,183,0.10) 0%, transparent 45%),
-    radial-gradient(circle at top right, rgba(200,160,74,0.12) 0%, transparent 50%),
-    radial-gradient(circle at top,#ffffff 0%,#f7f2ec 60%,#f1e6d3 100%);
+    radial-gradient(circle at top left, rgba(10,102,183,0.08) 0%, transparent 45%),
+    radial-gradient(circle at top right, rgba(200,160,74,0.10) 0%, transparent 50%),
+    linear-gradient(180deg,#ffffff 0%,#f6efe3 100%);
   display:grid;
-  grid-template-columns: 1.05fr 1fr;
-  gap:40px;
-  padding:50px 70px;
-  align-items:center;
+  grid-template-columns: 1.15fr 1fr;
+  gap:32px;
+  padding: 42px 64px 38px;
+  align-items:stretch;
 }
-.prod-left{color:var(--bleu-fonce)}
+
+.prod-left{
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  color:var(--bleu-fonce);
+}
 .badge{
   display:inline-flex;align-items:center;gap:10px;
   background:rgba(255,255,255,.92);
@@ -209,84 +239,116 @@ body{
   width:10px;height:10px;border-radius:50%;
   background:linear-gradient(135deg,#0b8b4b,#c62828);
 }
-.prod-title{font-size:72px;font-weight:900;margin-bottom:14px;color:var(--bleu-fonce)}
-.prod-sub{font-size:28px;line-height:1.45;margin-bottom:18px;color:#234;opacity:.92}
-.prod-list{font-size:28px;line-height:1.65;margin-bottom:22px}
+
+.prod-title{font-size:84px;font-weight:900;margin:10px 0 12px;}
+.prod-sub{font-size:30px;line-height:1.4;margin-bottom:16px;color:#234;opacity:.92;}
+.prod-list{font-size:30px;line-height:1.55;margin-bottom:18px;}
+
 .price{
-  display:inline-flex;align-items:baseline;gap:12px;
+  display:inline-flex;align-items:baseline;gap:14px;
   background:linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
   color:#fff;border-radius:999px;
   padding:16px 30px;
-  box-shadow:0 18px 40px rgba(0,0,0,.18);
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
   border:2px solid rgba(255,255,255,.55);
+  width:max-content;
 }
 .price b{font-size:64px}
 .price span{font-size:22px;opacity:.95}
 
-.prod-right{display:flex;align-items:center;justify-content:center}
-.prod-img-real{
-  width:100%;
-  max-height:78vh;
-  object-fit:contain;
-  filter:drop-shadow(0 26px 60px rgba(0,0,0,.35));
-  animation:prodFloat 6s ease-in-out infinite;
+.prod-right{
+  display:flex;
+  align-items:stretch;
+  justify-content:stretch;
 }
-@keyframes prodFloat{
-  0%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-14px) scale(1.04)}
-  100%{transform:translateY(0) scale(1)}
+.prod-media{
+  width:100%;
+  height:100%;
+  border-radius:26px;
+  overflow:hidden;
+  box-shadow:0 26px 60px rgba(0,0,0,.30);
+  background:rgba(255,255,255,.35);
+}
+.prod-media img,
+.prod-media video{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
 }
 
-/* ================== SLIDE 3 : MENU (GRID 4 COLONNES) ================== */
+/* =========================================================
+   SLIDE 3 : MENU (SANS SCROLL) -> 4 colonnes, sandwichs en 2 sous-colonnes
+   ========================================================= */
 .slide-menu{
   background:linear-gradient(180deg,#fdf8ee,#f1e6d3);
   display:flex;flex-direction:column;justify-content:space-between;
+  padding:0;
 }
-.menu-zone{flex:1;padding:34px 60px 26px}
+.menu-zone{flex:1;padding:28px 54px 18px}
 .menu-card{
-  height:100%;
-  background:#fff;border-radius:26px;padding:26px 28px 22px;
+  background:#fff;border-radius:24px;
+  padding:22px 24px 18px;
   box-shadow:0 12px 35px rgba(0,0,0,.18);
   border-top:6px solid var(--bleu-fonce);
 }
-.menu-head{margin-bottom:14px}
-.menu-tag{font-size:14px;letter-spacing:4px;text-transform:uppercase;color:#2c5a9a;margin-bottom:6px;font-weight:900}
-.menu-title-main{font-size:34px;font-weight:900;margin-bottom:6px;color:var(--bleu-fonce)}
+.menu-head{margin-bottom:10px}
+.menu-tag{
+  font-size:13px;letter-spacing:4px;text-transform:uppercase;
+  color:#2c5a9a;margin-bottom:6px;font-weight:900;
+}
+.menu-title-main{font-size:32px;font-weight:900;margin-bottom:4px;color:var(--bleu-fonce)}
 .menu-sub{font-size:18px;color:#355;opacity:.9}
 
 .menu-columns{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:26px;
-  margin-top:16px;
+  grid-template-columns: 1fr 1.25fr 1fr 0.9fr; /* sandwichs un peu + large */
+  gap:18px;
+  margin-top:12px;
 }
-.menu-col{font-size:18px;color:var(--bleu-fonce)}
+
+.menu-col{font-size:17px;color:var(--bleu-fonce)}
 .menu-col h3{
-  font-size:20px;margin-bottom:10px;
+  font-size:20px;margin-bottom:8px;
   border-bottom:2px solid var(--bleu-fonce);padding-bottom:6px;
 }
-.menu-col ul{list-style:none}
-.menu-col li{display:flex;justify-content:space-between;margin-bottom:7px;gap:14px}
+.menu-col ul{list-style:none;margin-bottom:8px}
+.menu-col li{
+  display:flex;justify-content:space-between;
+  margin-bottom:6px;gap:12px;
+}
 .menu-col li span{color:var(--or);font-weight:900;white-space:nowrap}
+
+/* colonne sandwichs en 2 sous-colonnes pour tout faire rentrer */
+.menu-col.sandwichs ul{
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+  column-gap:18px;
+}
+.menu-col.sandwichs li{margin-bottom:6px}
 
 .menu-footer{
   background:linear-gradient(135deg,var(--bleu-fonce),#1e63b6);
-  padding:18px 60px 22px;color:#fff;
+  padding:14px 54px 16px;color:#fff;
 }
-.footer-small{letter-spacing:5px;font-size:14px;opacity:.92;font-weight:800}
-.footer-title{font-size:24px;font-weight:900;margin:6px 0}
-.footer-sub{font-size:16px;opacity:.95}
+.footer-small{letter-spacing:5px;font-size:13px;opacity:.92;font-weight:800}
+.footer-title{font-size:22px;font-weight:900;margin:6px 0}
+.footer-sub{font-size:15px;opacity:.95}
 
-/* Sécurité responsive */
+/* ================== RESPONSIVE (au cas où) ================== */
 @media (max-width:1100px){
-  .slide-produit{grid-template-columns:1fr; text-align:center}
-  .prod-img-real{max-height:50vh}
+  .slide-produit{grid-template-columns:1fr;gap:18px;padding:24px}
+  .prod-title{font-size:56px}
+  .prod-sub,.prod-list{font-size:22px}
+  .price b{font-size:48px}
   .menu-columns{grid-template-columns:1fr 1fr}
+  .menu-col.sandwichs ul{grid-template-columns:1fr}
 }
 </style>
 </head>
 
 <body>
+
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 
@@ -319,7 +381,7 @@ body{
     </div>
   </section>
 
-  <!-- SLIDE 2 : NOUVEAU PRODUIT (IMAGE) -->
+  <!-- SLIDE 2 : NOUVEAU PRODUIT (image ou video) -->
   <section class="slide s2 slide-produit">
     <div class="prod-left">
       <div class="badge"><span class="dot"></span> NOUVEAUTÉ</div>
@@ -333,11 +395,17 @@ body{
     </div>
 
     <div class="prod-right">
-      <img class="prod-img-real" src="nouveau-produit.png" alt="Sandwich Libanais">
+      <div class="prod-media">
+        <!-- IMAGE -->
+        <img src="nouveau-produit.png" alt="Sandwich Libanais">
+        <!-- VIDEO (si tu veux) :
+        <video src="nouveau-produit.mp4" autoplay muted loop playsinline></video>
+        -->
+      </div>
     </div>
   </section>
 
-  <!-- SLIDE 3 : MENU (GRID 4 COLONNES) -->
+  <!-- SLIDE 3 : MENU (SANS SCROLL) -->
   <section class="slide s3 slide-menu">
     <div class="menu-zone">
       <div class="menu-card">
@@ -353,12 +421,12 @@ body{
             <ul>
               <li>Brick à l’œuf <span>3 €</span></li>
               <li>Fricassée <span>3 €</span></li>
-              <li>Salade Tunisienne / Mechwia <span>7 €</span></li>
+              <li>Salade Tunisienne / Mechwiya <span>7 €</span></li>
               <li>Frites maison <span>3 €</span></li>
             </ul>
           </div>
 
-          <div class="menu-col">
+          <div class="menu-col sandwichs">
             <h3>Sandwichs && Pizza</h3>
             <ul>
               <li>Makloub <span>8 €</span></li>
@@ -388,12 +456,11 @@ body{
           <div class="menu-col">
             <h3>Boissons</h3>
             <ul>
-              <li>Eau minérale <span>1,8 €</span></li>
-              <li>Sodas <span>1,8 €</span></li>
+              <li>Eau minérale <span>1,80 €</span></li>
+              <li>Sodas <span>1,80 €</span></li>
             </ul>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -424,3 +491,4 @@ body{
 
 </body>
 </html>
+```0
