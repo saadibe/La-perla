@@ -17,55 +17,39 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,san
   --blanc:#fff;
 
   /* timings */
-  --loop:40s; /* 8s porte + 12s produit + 20s menu */
+  --t1:8s;     /* porte (5s fermée + 3s ouverte) */
+  --t2:12s;    /* nouveau produit */
+  --t3:20s;    /* menu */
+  --loop:40s;  /* total = 8+12+20 */
 }
 body{
   background:radial-gradient(circle at top,#ffffff 0%,#f4efe7 45%,#e7dcc9 100%);
 }
 
-/* ================== SAFE AREA TV (évite coupe bords) ================== */
-.frame{
-  position:fixed;
-  top:5vh;
-  left:5vw;
-  width:90vw;
-  height:90vh;
-  overflow:hidden;
-  background:var(--blanc);
-  border-radius:26px;
-  box-shadow:0 18px 50px rgba(0,0,0,.22);
-}
-
 /* ================== BORDURES HAUT/BAS ================== */
 .top-border,.bottom-border{
-  position:fixed;left:5vw;right:5vw;height:10px;z-index:100;
+  position:fixed;left:0;right:0;height:10px;z-index:100;
   background:repeating-linear-gradient(
     to right,var(--bleu-fonce),var(--bleu-fonce) 40px,transparent 40px,transparent 80px
   );
 }
-.top-border{top:5vh}
-.bottom-border{bottom:5vh}
+.top-border{top:0}
+.bottom-border{bottom:0}
 
 /* ================== LOGO ================== */
 .logo{
-  position:fixed;
-  top:calc(5vh + 14px);
-  left:calc(5vw + 14px);
-  z-index:120;
+  position:fixed;top:16px;left:18px;z-index:120;
 }
 .logo img{
-  height:110px;width:auto;
+  height:88px;width:auto;
   border-radius:999px;
-  background:transparent;
+  background:transparent;       /* pas de contour forcé */
   box-shadow:0 10px 24px rgba(0,0,0,.28);
 }
 
 /* ================== PILL FOOTER ================== */
 .footer-pill{
-  position:fixed;
-  right:calc(5vw + 14px);
-  bottom:calc(5vh + 14px);
-  z-index:120;
+  position:fixed;right:24px;bottom:18px;z-index:120;
   background:rgba(255,255,255,.92);
   padding:10px 16px;border-radius:999px;
   box-shadow:0 10px 26px rgba(0,0,0,.18);
@@ -74,8 +58,26 @@ body{
 }
 .footer-pill b{color:var(--bleu)}
 
+/* ================== ZONE D’AFFICHAGE (TV) ================== */
+.frame{
+  position:fixed;
+  top:42px; left:42px; right:42px; bottom:110px;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:0 20px 60px rgba(0,0,0,.28);
+  background:var(--blanc);
+}
+
+/* sur grand écran, laisser place au logo à gauche */
+@media (min-width:1200px){
+  .frame{left:190px}
+}
+
 /* ================== SLIDES ================== */
-.slide{position:absolute;inset:0;opacity:0;pointer-events:none}
+.slide{
+  position:absolute;inset:0;
+  opacity:0;pointer-events:none;
+}
 .slide.s1{animation:s1 var(--loop) infinite}
 .slide.s2{animation:s2 var(--loop) infinite}
 .slide.s3{animation:s3 var(--loop) infinite}
@@ -105,54 +107,47 @@ body{
 }
 
 /* =========================================================
-   SLIDE 1 : PORTE (plein écran propre)
+   SLIDE 1 : PORTE PLEIN ÉCRAN (fermée -> ouverte)
    ========================================================= */
-.slide-porte{background:#efe6d6}
-
-.door-bg{
-  position:absolute; inset:0;
+.slide-porte{
+  background:linear-gradient(180deg,#ffffff,var(--beige));
+}
+.door{
+  position:absolute;inset:0;
   background-position:center;
   background-repeat:no-repeat;
   background-size:cover;
-  filter: blur(14px) saturate(1.05);
-  transform: scale(1.08);
   opacity:0;
-}
-.door-fg{
-  position:absolute; inset:0;
-  background-position:center;
-  background-repeat:no-repeat;
-  background-size:contain;
-  opacity:0;
+  transform:scale(1.08);
 }
 
-/* images */
-.door-bg.closed, .door-fg.closed{ background-image:url("porte-fermee.png"); }
-.door-bg.open, .door-fg.open{ background-image:url("porte-ouverte.png"); }
-
-/* timings sur 40s :
-   fermée visible ~0-12.5% (=5s)
-   ouverte visible ~12.5-20% (=3s)
-*/
-.door-bg.closed, .door-fg.closed{ animation:doorClosed var(--loop) infinite; }
-.door-bg.open, .door-fg.open{ animation:doorOpen var(--loop) infinite; }
-
+/* PORTE FERMÉE 0–5s => 0–12.5% de 40s */
+.door.closed{
+  background-image:url("porte-fermee.png");
+  animation:doorClosed var(--loop) infinite;
+}
+/* PORTE OUVERTE 5–8s => 12.5–20% */
+.door.open{
+  background-image:url("porte-ouverte.png");
+  animation:doorOpen var(--loop) infinite;
+}
 @keyframes doorClosed{
-  0%{opacity:0}
+  0%{opacity:0;transform:scale(1.1)}
   2%{opacity:1}
-  12.5%{opacity:1}
+  12.5%{opacity:1;transform:scale(1)}
   17%{opacity:0}
   100%{opacity:0}
 }
 @keyframes doorOpen{
   0%{opacity:0}
   12.5%{opacity:0}
-  17%{opacity:1}
-  20%{opacity:1}
+  17%{opacity:1;transform:scale(1)}
+  20%{opacity:1;transform:scale(1.04)}
   22%{opacity:0}
   100%{opacity:0}
 }
 
+/* TEXTE : UNIQUEMENT APRÈS OUVERTURE */
 .open-text{
   position:absolute;inset:0;
   display:flex;flex-direction:column;
@@ -177,13 +172,16 @@ body{
   0%{opacity:0;transform:translateY(18px)}
   12.5%{opacity:0;transform:translateY(18px)}
   18%{opacity:1;transform:translateY(0)}
-  20%{opacity:1}
+  20%{opacity:1;transform:translateY(0)}
   22%{opacity:0;transform:translateY(-6px)}
   100%{opacity:0}
 }
 
-/* Jasmin subtil après ouverture */
-.jasmin{position:absolute;inset:0;pointer-events:none;opacity:0;animation:jasminShow var(--loop) infinite}
+/* JASMIN SUBTIL (uniquement après ouverture) */
+.jasmin{
+  position:absolute;inset:0;pointer-events:none;
+  opacity:0;animation:jasminShow var(--loop) infinite;
+}
 @keyframes jasminShow{
   0%{opacity:0}
   12.5%{opacity:0}
@@ -191,7 +189,11 @@ body{
   22%{opacity:0}
   100%{opacity:0}
 }
-.petal{position:absolute;width:22px;height:22px;opacity:.85;filter:drop-shadow(0 10px 12px rgba(0,0,0,.10));animation:float 3.8s ease-in-out infinite}
+.petal{
+  position:absolute;width:22px;height:22px;opacity:.85;
+  filter:drop-shadow(0 10px 12px rgba(0,0,0,.10));
+  animation:float 3.8s ease-in-out infinite;
+}
 .petal:nth-child(1){left:18%;top:84%}
 .petal:nth-child(2){left:36%;top:88%;animation-delay:.6s}
 .petal:nth-child(3){left:55%;top:82%;animation-delay:1.2s}
@@ -205,28 +207,20 @@ body{
 .petal svg{width:100%;height:100%}
 
 /* =========================================================
-   SLIDE 2 : NOUVEAU PRODUIT (VIDEO OU IMAGE) - FULL TV
+   SLIDE 2 : NOUVEAU PRODUIT (ton PNG)
    ========================================================= */
 .slide-produit{
   background:
-    radial-gradient(circle at top left, rgba(10,102,183,0.08) 0%, transparent 45%),
-    radial-gradient(circle at top right, rgba(200,160,74,0.10) 0%, transparent 50%),
-    linear-gradient(180deg,#ffffff 0%,#f6efe3 100%);
-  display:grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap:32px;
-  padding:42px 64px 38px;
-  align-items:stretch;
+    radial-gradient(circle at top left, rgba(10,102,183,0.10) 0%, transparent 45%),
+    radial-gradient(circle at top right, rgba(200,160,74,0.12) 0%, transparent 50%),
+    radial-gradient(circle at top,#ffffff 0%,#f7f2ec 60%,#f1e6d3 100%);
+  display:flex;align-items:center;justify-content:center;
+  padding:52px;gap:42px;
 }
-.prod-left{
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  color:var(--bleu-fonce);
-}
+.prod-left{flex:1.05;color:var(--bleu-fonce)}
 .badge{
   display:inline-flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.92);
+  background:rgba(255,255,255,.9);
   border:2px solid rgba(11,60,116,.15);
   border-radius:999px;
   padding:10px 14px;
@@ -241,114 +235,95 @@ body{
   width:10px;height:10px;border-radius:50%;
   background:linear-gradient(135deg,#0b8b4b,#c62828);
 }
-.prod-title{font-size:84px;font-weight:900;margin:10px 0 12px}
-.prod-sub{font-size:30px;line-height:1.4;margin-bottom:16px;color:#234;opacity:.92}
-.prod-list{font-size:30px;line-height:1.55;margin-bottom:18px}
+.prod-title{
+  font-size:56px;font-weight:900;margin-bottom:12px;
+  color:var(--bleu-fonce);
+}
+.prod-sub{
+  font-size:22px;line-height:1.45;margin-bottom:18px;color:#234;
+  opacity:.92;
+}
+.prod-list{
+  font-size:22px;line-height:1.65;margin-bottom:22px;
+}
 .price{
   display:inline-flex;align-items:baseline;gap:12px;
   background:linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
   color:#fff;border-radius:999px;
-  padding:16px 28px;
+  padding:14px 26px;
   box-shadow:0 16px 34px rgba(0,0,0,.18);
   border:2px solid rgba(255,255,255,.55);
-  width:fit-content;
 }
-.price b{font-size:64px}
-.price span{font-size:22px;opacity:.95}
+.price b{font-size:48px}
+.price span{font-size:18px;opacity:.95}
 
-.prod-right{display:flex;align-items:stretch;justify-content:stretch}
-.prod-media{
-  width:100%;
-  height:100%;
-  border-radius:28px;
-  overflow:hidden;
-  box-shadow:0 26px 60px rgba(0,0,0,.30);
-  background:rgba(255,255,255,.35);
+.prod-right{
+  flex:1;display:flex;align-items:center;justify-content:center;
 }
-.prod-media img,
-.prod-media video{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
+.prod-img-real{
+  max-width:42vw;
+  max-height:62vh;
+  object-fit:contain;
+  filter:drop-shadow(0 22px 44px rgba(0,0,0,.35));
+  animation:prodFloat 6s ease-in-out infinite;
+}
+@keyframes prodFloat{
+  0%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-14px) scale(1.04)}
+  100%{transform:translateY(0) scale(1)}
 }
 
 /* =========================================================
-   SLIDE 3 : MENU (sans scroll, tout rentre)
+   SLIDE 3 : MENU (3 colonnes)
    ========================================================= */
 .slide-menu{
   background:linear-gradient(180deg,#fdf8ee,#f1e6d3);
   display:flex;flex-direction:column;justify-content:space-between;
 }
-.menu-zone{flex:1;padding:32px 52px 20px}
+.menu-zone{flex:1;padding:34px 60px 26px}
 .menu-card{
-  background:#fff;border-radius:26px;padding:22px 24px 18px;
+  background:#fff;border-radius:26px;padding:26px 28px 22px;
   box-shadow:0 12px 35px rgba(0,0,0,.18);
   border-top:6px solid var(--bleu-fonce);
-  height:100%;
-  display:flex;
-  flex-direction:column;
 }
-.menu-head{margin-bottom:10px}
+.menu-head{margin-bottom:14px}
 .menu-tag{
   font-size:14px;letter-spacing:4px;text-transform:uppercase;
   color:#2c5a9a;margin-bottom:6px;font-weight:900;
 }
-.menu-title-main{font-size:38px;font-weight:900;margin-bottom:4px;color:var(--bleu-fonce)}
+.menu-title-main{font-size:34px;font-weight:900;margin-bottom:6px;color:var(--bleu-fonce)}
 .menu-sub{font-size:18px;color:#355;opacity:.9}
 
-/* ✅ 3 colonnes + sandwichs en 2 sous-colonnes */
-.menu-columns{
-  display:grid;
-  grid-template-columns: 1fr 1.35fr 1fr;
-  gap:24px;
-  margin-top:10px;
-  flex:1;
-}
-.menu-col{font-size:20px;color:var(--bleu-fonce)}
+.menu-columns{display:flex;gap:34px;margin-top:16px}
+.menu-col{flex:1;font-size:20px;color:var(--bleu-fonce)}
 .menu-col h3{
-  font-size:24px;margin-bottom:8px;
-  border-bottom:2px solid var(--bleu-fonce);
-  padding-bottom:6px;
+  font-size:22px;margin-bottom:10px;
+  border-bottom:2px solid var(--bleu-fonce);padding-bottom:6px;
 }
-.menu-col ul{list-style:none;margin-bottom:10px}
-.menu-col li{
-  display:flex;
-  justify-content:space-between;
-  gap:14px;
-  margin-bottom:6px;
-  line-height:1.2;
-}
+.menu-col ul{list-style:none;margin-bottom:14px}
+.menu-col li{display:flex;justify-content:space-between;margin-bottom:8px;gap:14px}
 .menu-col li span{color:var(--or);font-weight:900;white-space:nowrap}
 
-/* Sandwichs en 2 colonnes */
-.menu-col.sandwichs ul{
-  display:grid;
-  grid-template-columns: 1fr 1fr;
-  column-gap:18px;
-}
-.menu-col.sandwichs li{margin-bottom:6px}
-
-/* Plats + Boissons en bas à droite */
-.right-stack{
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  gap:10px;
-}
-
-/* footer menu */
 .menu-footer{
   background:linear-gradient(135deg,var(--bleu-fonce),#1e63b6);
-  padding:14px 52px 16px;color:#fff;
+  padding:18px 60px 22px;color:#fff;
 }
 .footer-small{letter-spacing:5px;font-size:14px;opacity:.92;font-weight:800}
-.footer-title{font-size:24px;font-weight:900;margin:4px 0}
+.footer-title{font-size:24px;font-weight:900;margin:6px 0}
 .footer-sub{font-size:16px;opacity:.95}
+
+/* ================== RESPONSIVE (au cas où) ================== */
+@media (max-width:1100px){
+  .frame{left:16px;right:16px}
+  .slide-produit{flex-direction:column;text-align:center}
+  .prod-img-real{max-width:80vw;max-height:45vh}
+  .menu-columns{flex-direction:column}
+}
 </style>
 </head>
 
 <body>
+
 <div class="top-border"></div>
 <div class="bottom-border"></div>
 
@@ -364,10 +339,8 @@ body{
 
   <!-- SLIDE 1 : PORTE -->
   <section class="slide s1 slide-porte">
-    <div class="door-bg closed"></div>
-    <div class="door-fg closed"></div>
-    <div class="door-bg open"></div>
-    <div class="door-fg open"></div>
+    <div class="door closed"></div>
+    <div class="door open"></div>
 
     <div class="jasmin">
       <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M32 10c6 10 6 20 0 26-6-6-6-16 0-26Z" fill="#fff"/></svg></div>
@@ -376,14 +349,9 @@ body{
       <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M10 32c10-6 20-6 26 0-6 6-16 6-26 0Z" fill="#fff"/></svg></div>
       <div class="petal"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="6" fill="#f3d7a6"/><path d="M32 10c6 10 6 20 0 26-6-6-6-16 0-26Z" fill="#fff"/></svg></div>
     </div>
-
-    <div class="open-text">
-      <h1>LA PERLA</h1>
-      <p>SAVEURS AUTHENTIQUES · BEZONS</p>
-    </div>
   </section>
 
-  <!-- SLIDE 2 : NOUVEAU PRODUIT (VIDEO PAR DEFAUT) -->
+  <!-- SLIDE 2 : NOUVEAU PRODUIT -->
   <section class="slide s2 slide-produit">
     <div class="prod-left">
       <div class="badge"><span class="dot"></span> NOUVEAUTÉ</div>
@@ -397,77 +365,66 @@ body{
     </div>
 
     <div class="prod-right">
-      <div class="prod-media">
-        <!-- ✅ VIDEO -->
-        <video src="nouveau-produit.mp4" autoplay muted loop playsinline></video>
-        <!-- ✅ si tu veux une image à la place, commente la video et dé-commente l'image -->
-        <!-- <img src="nouveau-produit.png" alt="Sandwich Libanais"> -->
-      </div>
+      <img class="prod-img-real" src="nouveau-produit.png" alt="Nouveau produit">
     </div>
   </section>
 
-  <!-- SLIDE 3 : MENU (sans scroll) -->
+  <!-- SLIDE 3 : MENU -->
+  <!-- SLIDE 3 : MENU -->
   <section class="slide s3 slide-menu">
     <div class="menu-zone">
       <div class="menu-card">
-
         <div class="menu-head">
           <div class="menu-tag">CARTE LA PERLA</div>
           <div class="menu-title-main">Menu</div>
-          <div class="menu-sub">Entrées · Sandwichs & Pizza · Plats · Boissons</div>
+          <div class="menu-sub">Entrées · Sandwichs · Plats</div>
         </div>
 
         <div class="menu-columns">
-
           <div class="menu-col">
             <h3>Entrées</h3>
             <ul>
               <li>Brick à l’œuf <span>3 €</span></li>
               <li>Fricassée <span>3 €</span></li>
-              <li>Salade Tunisienne / Mechwiya <span>7 €</span></li>
+              <li>Salade Tunisienne ou salade mechwia <span>7 €</span></li>
               <li>Frites maison <span>3 €</span></li>
             </ul>
           </div>
 
-          <div class="menu-col sandwichs">
-            <h3>Sandwichs & Pizza</h3>
+          <div class="menu-col">
+            <h3>Sandwichs && Pizza</h3>
             <ul>
-              <li>Makloub <span>8 €</span></li>
+              <li>Makloub  <span>8 €</span></li>
               <li>Baguette Farcie <span>9 €</span></li>
-              <li>Cornet <span>9 €</span></li>
+	      <li>Cornet <span>9 €</span></li>
               <li>Libanais <span>9 €</span></li>
-              <li>Tabouna <span>8 €</span></li>
-              <li>Chapatti Mahdia <span>8 €</span></li>
-              <li>Chapatti <span>6 €</span></li>
-              <li>Mlawi <span>7 €</span></li>
-              <li>Sandwich Kaftajji <span>8 €</span></li>
-              <li>Sandwich Tounsi <span>8 €</span></li>
-              <li>Sandwich Escalope <span>8 €</span></li>
+	      <li>Tabouna <span>8 €</span></li>
+	      <li>Chapatti Mahdia<span>8 €</span></li>
+	      <li>Chapatti <span>6 €</span></li>
+	      <li>Mlawi <span>7 €</span></li>
+	      <li>Sandwich Kaftajji <span>8 €</span></li>
+	      <li>Sandwich Tounsi <span>8 €</span></li>
+	      <li>Sandwich Escalope <span>8 €</span></li>
             </ul>
           </div>
 
-          <div class="right-stack menu-col">
-            <div>
-              <h3>Plats</h3>
-              <ul>
-                <li>Plat Kaftajji <span>9 €</span></li>
-                <li>Plat Kaftajji Merguez <span>12 €</span></li>
-                <li>Plat Tunisien <span>9 €</span></li>
-                <li>Ojja Merguez <span>10,50 €</span></li>
-              </ul>
-            </div>
-
-            <div>
-              <h3>Boissons</h3>
-              <ul>
-                <li>Eau minérale <span>1,80 €</span></li>
-                <li>Sodas <span>1,80 €</span></li>
-              </ul>
-            </div>
+          <div class="menu-col">
+            <h3>Plats</h3>
+            <ul>
+              <li>Plat Kaftajji <span>9 €</span></li>
+              <li>Plat Kaftajji Mergez <span>12 €</span></li>
+              <li>Plat Tunisien <span>9 €</span></li>
+              <li>Ojja Merguez <span>10,50 €</span></li>
+            </ul>
           </div>
-
+       <div class="menu-col">
+            <h3>Boissons</h3>
+            <ul>
+              <li>Eau minrale <span>1.8 €</span></li>
+              <li>Soudes <span>1.8 €</span></li>
+            </ul>
+          </div>
         </div>
-
       </div>
     </div>
 
