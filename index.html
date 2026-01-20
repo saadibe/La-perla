@@ -17,9 +17,6 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,san
   --blanc:#fff;
 
   /* timings */
-  --t1:8s;     /* porte (5s fermée + 3s ouverte) */
-  --t2:12s;    /* nouveau produit */
-  --t3:20s;    /* menu */
   --loop:40s;  /* total = 8+12+20 */
 }
 body{
@@ -43,7 +40,7 @@ body{
 .logo img{
   height:88px;width:auto;
   border-radius:999px;
-  background:transparent;       /* pas de contour forcé */
+  background:transparent;
   box-shadow:0 10px 24px rgba(0,0,0,.28);
 }
 
@@ -61,16 +58,11 @@ body{
 /* ================== ZONE D’AFFICHAGE (TV) ================== */
 .frame{
   position:fixed;
-  top:42px; left:42px; right:42px; bottom:110px;
-  border-radius:30px;
+  top:18px;left:18px;right:18px;bottom:18px;
+  border-radius:22px;
   overflow:hidden;
   box-shadow:0 20px 60px rgba(0,0,0,.28);
   background:var(--blanc);
-}
-
-/* sur grand écran, laisser place au logo à gauche */
-@media (min-width:1200px){
-  .frame{left:190px}
 }
 
 /* ================== SLIDES ================== */
@@ -109,9 +101,7 @@ body{
 /* =========================================================
    SLIDE 1 : PORTE PLEIN ÉCRAN (fermée -> ouverte)
    ========================================================= */
-.slide-porte{
-  background:linear-gradient(180deg,#ffffff,var(--beige));
-}
+.slide-porte{background:linear-gradient(180deg,#ffffff,var(--beige))}
 .door{
   position:absolute;inset:0;
   background-position:center;
@@ -120,13 +110,10 @@ body{
   opacity:0;
   transform:scale(1.08);
 }
-
-/* PORTE FERMÉE 0–5s => 0–12.5% de 40s */
 .door.closed{
   background-image:url("porte-fermee.png");
   animation:doorClosed var(--loop) infinite;
 }
-/* PORTE OUVERTE 5–8s => 12.5–20% */
 .door.open{
   background-image:url("porte-ouverte.png");
   animation:doorOpen var(--loop) infinite;
@@ -147,37 +134,7 @@ body{
   100%{opacity:0}
 }
 
-/* TEXTE : UNIQUEMENT APRÈS OUVERTURE */
-.open-text{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;
-  align-items:center;justify-content:flex-end;
-  padding-bottom:8vh;text-align:center;
-  color:var(--bleu-fonce);
-  text-shadow:0 14px 30px rgba(0,0,0,.22);
-  opacity:0;
-  animation:textShow var(--loop) infinite;
-}
-.open-text h1{
-  font-size:clamp(34px,5vw,74px);
-  font-weight:900;letter-spacing:.18em;
-}
-.open-text p{
-  margin-top:12px;
-  font-size:clamp(14px,2vw,24px);
-  letter-spacing:.22em;
-  color:#2c5a9a;
-}
-@keyframes textShow{
-  0%{opacity:0;transform:translateY(18px)}
-  12.5%{opacity:0;transform:translateY(18px)}
-  18%{opacity:1;transform:translateY(0)}
-  20%{opacity:1;transform:translateY(0)}
-  22%{opacity:0;transform:translateY(-6px)}
-  100%{opacity:0}
-}
-
-/* JASMIN SUBTIL (uniquement après ouverture) */
+/* JASMIN SUBTIL (après ouverture) */
 .jasmin{
   position:absolute;inset:0;pointer-events:none;
   opacity:0;animation:jasminShow var(--loop) infinite;
@@ -207,269 +164,164 @@ body{
 .petal svg{width:100%;height:100%}
 
 /* =========================================================
-   SLIDE 2 : NOUVEAU PRODUIT (La Perla - HERO image grande)
+   SLIDE 2 : PUB TV (IMAGE NETTE EN FOND)
+   IMPORTANT: utilise une image grande (>=1920x1080)
    ========================================================= */
 .slide-produit{
-  position:relative;
-  display:flex;
-  align-items:stretch;
-  justify-content:space-between;
-  gap: 18px;
-  padding: 18px 18px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-  background:
-    radial-gradient(circle at 18% 20%, rgba(10,102,183,0.14) 0%, transparent 45%),
-    radial-gradient(circle at 82% 20%, rgba(200,160,74,0.16) 0%, transparent 55%),
-    linear-gradient(180deg, #ffffff 0%, #f7f2ec 55%, #f1e6d3 100%);
+  background-image: url("nouveau-produit.png");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
 }
 
-/* panneau texte (plus compact) */
+.slide-produit::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.55),
+    rgba(255,255,255,0.75)
+  );
+  z-index:1;
+}
+
+.slide-produit > *{
+  position: relative;
+  z-index: 2;
+}
+
+/* bloc texte */
 .prod-left{
-  flex: 0.9;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding: 14px 14px 14px 20px;
+  max-width: 72%;
+  text-align: center;
+  background: rgba(255,255,255,0.88);
+  padding: 36px 44px;
+  border-radius: 28px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
   color: var(--bleu-fonce);
 }
 
-/* titres + textes plus "pub" */
-.badge{ margin-bottom: 12px; }
+.badge{
+  display:inline-flex;align-items:center;gap:10px;
+  background:rgba(255,255,255,.95);
+  border:2px solid rgba(11,60,116,.15);
+  border-radius:999px;
+  padding:10px 16px;
+  box-shadow:0 10px 24px rgba(0,0,0,.12);
+  margin: 0 auto 16px;
+  font-weight:900;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:#2c5a9a;
+}
+.badge .dot{
+  width:10px;height:10px;border-radius:50%;
+  background:linear-gradient(135deg,#0b8b4b,#c62828);
+}
+
 .prod-title{
-  font-size: clamp(46px, 4vw, 78px);
+  font-size: clamp(52px,4.8vw,90px);
   font-weight: 900;
-  margin-bottom: 10px;
+  margin-bottom: 12px;
+  color: var(--bleu-fonce);
 }
 .prod-sub{
-  font-size: clamp(18px, 1.6vw, 28px);
-  line-height: 1.35;
-  margin-bottom: 12px;
+  font-size: clamp(20px,1.8vw,30px);
+  line-height:1.35;
+  margin-bottom: 14px;
+  color:#234;
 }
 .prod-list{
-  font-size: clamp(18px, 1.6vw, 26px);
-  line-height: 1.5;
-  margin-bottom: 16px;
+  font-size: clamp(20px,1.8vw,28px);
+  line-height:1.55;
+  margin-bottom: 20px;
 }
-.price b{
-  font-size: clamp(58px, 4.8vw, 96px);
-  line-height: 1;
+.price{
+  display:inline-flex;align-items:baseline;gap:12px;
+  background:linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
+  color:#fff;border-radius:999px;
+  padding: 18px 36px;
+  box-shadow:0 16px 34px rgba(0,0,0,.18);
+  border:2px solid rgba(255,255,255,.55);
+  margin: 0 auto;
 }
+.price b{font-size: clamp(60px,5vw,100px); line-height:1}
+.price span{font-size: clamp(14px,1.2vw,18px);opacity:.95}
 
-/* panneau image (très large) */
-.prod-right{
-  flex: 1.35;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding: 10px 10px 10px 0;
-  border-radius: 26px;
-  overflow:hidden;
-
-  /* cadre premium */
-  background: rgba(255,255,255,.55);
-  border: 2px solid rgba(11,60,116,.10);
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
-}
-
-/* fond flou qui remplit la zone */
-.prod-right::before{
-  content:"";
-  position:absolute; inset:0;
-  background-image: url("nouveau-produit.png");
-  background-size: cover;
-  background-position: center;
-  filter: blur(18px);
-  transform: scale(1.12);
-  opacity: .35;
-}
-
-/* image principale (énorme) */
-.prod-img-real{
-  position:relative;
-  z-index:1;
-
-  height: min(82vh, 880px);   /* TRÈS GRAND */
-  width: auto;
-  max-width: 95%;
-
-  object-fit: contain;
-  filter: drop-shadow(0 22px 44px rgba(0,0,0,.30));
-  animation: prodFloat 6s ease-in-out infinite;
-}
-
-@keyframes prodFloat{
-  0%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-10px) scale(1.03)}
-  100%{transform:translateY(0) scale(1)}
-}
-
-/* petit écran */
-@media (max-width:1100px){
-  .slide-produit{flex-direction:column; padding:18px}
-  .prod-right{padding:0}
-  .prod-img-real{height: 46vh;}
-}
+/* cache l'image HTML */
+.prod-right,.prod-img-real{display:none !important}
 
 /* =========================================================
-   SLIDE 3 : MENU (3 colonnes)
+   SLIDE 3 : MENU (2 colonnes lisibles)
    ========================================================= */
 .slide-menu{
   background:linear-gradient(180deg,#fdf8ee,#f1e6d3);
   display:flex;flex-direction:column;justify-content:space-between;
 }
-.menu-zone{flex:1;padding:34px 60px 26px}
-.menu-card{
-  background:#fff;border-radius:26px;padding:26px 28px 22px;
+.slide-menu .menu-zone{flex:1;padding:16px 22px 12px}
+.slide-menu .menu-card{
+  background:#fff;border-radius:26px;
+  padding:18px 18px 14px;
   box-shadow:0 12px 35px rgba(0,0,0,.18);
   border-top:6px solid var(--bleu-fonce);
 }
-.menu-head{margin-bottom:14px}
-.menu-tag{
-  font-size:14px;letter-spacing:4px;text-transform:uppercase;
+.slide-menu .menu-head{margin-bottom:12px}
+.slide-menu .menu-tag{
+  font-size: clamp(16px, 1.2vw, 20px);
+  letter-spacing: .18em;
+  text-transform:uppercase;
   color:#2c5a9a;margin-bottom:6px;font-weight:900;
 }
-.menu-title-main{font-size:34px;font-weight:900;margin-bottom:6px;color:var(--bleu-fonce)}
-.menu-sub{font-size:18px;color:#355;opacity:.9}
-
-.menu-columns{display:flex;gap:34px;margin-top:16px}
-.menu-col{flex:1;font-size:20px;color:var(--bleu-fonce)}
-.menu-col h3{
-  font-size:22px;margin-bottom:10px;
-  border-bottom:2px solid var(--bleu-fonce);padding-bottom:6px;
-}
-.menu-col ul{list-style:none;margin-bottom:14px}
-.menu-col li{display:flex;justify-content:space-between;margin-bottom:8px;gap:14px}
-.menu-col li span{color:var(--or);font-weight:900;white-space:nowrap}
-
-.menu-footer{
-  background:linear-gradient(135deg,var(--bleu-fonce),#1e63b6);
-  padding:18px 60px 22px;color:#fff;
-}
-.footer-small{letter-spacing:5px;font-size:14px;opacity:.92;font-weight:800}
-.footer-title{font-size:24px;font-weight:900;margin:6px 0}
-.footer-sub{font-size:16px;opacity:.95}
-
-/* ================== RESPONSIVE (au cas où) ================== */
-@media (max-width:1100px){
-  .frame{left:16px;right:16px}
-  .slide-produit{flex-direction:column;text-align:center}
-  .prod-img-real{max-width:80vw;max-height:45vh}
-  .menu-columns{flex-direction:column}
-}
-/* =========================
-   FIX AFFICHAGE TV (43")
-   Ajoute a la fin du CSS
-   ========================= */
-
-/* 1) Frame beaucoup plus grande (moins de marges) */
-.frame{
-  top: 18px !important;
-  left: 18px !important;
-  right: 18px !important;
-  bottom: 18px !important; /* au lieu de 110px */
-  border-radius: 22px !important;
-}
-
-/* 2) Annule le decalage a gauche (il te reduit l'ecran) */
-@media (min-width:1200px){
-  .frame{ left: 18px !important; }
-}
-
-/* 3) Menu: utilise toute la hauteur disponible */
-.slide-menu{
-  height: 100% !important;
-}
-
-.slide-menu .menu-zone{
-  padding: 22px 28px 16px !important; /* moins de padding */
-}
-
-.slide-menu .menu-card{
-  height: calc(100% - 0px) !important;
-  padding: 22px 22px 16px !important;
-}
-
-/* 4) Texte menu plus gros (lisible TV) */
-.slide-menu .menu-tag{
-  font-size: clamp(16px, 1.3vw, 22px) !important;
-}
-
 .slide-menu .menu-title-main{
-  font-size: clamp(34px, 2.6vw, 48px) !important;
+  font-size: clamp(34px, 2.8vw, 52px);
+  font-weight:900;margin-bottom:6px;color:var(--bleu-fonce)
 }
+.slide-menu .menu-sub{font-size: clamp(16px, 1.4vw, 22px);color:#355;opacity:.9}
 
-.slide-menu .menu-sub{
-  font-size: clamp(16px, 1.4vw, 22px) !important;
-}
-
-/* 5) Colonnes: en GRID propre (4 colonnes), plus stable que flex */
 .slide-menu .menu-columns{
-  display: grid !important;
-  grid-template-columns: repeat(4, 1fr) !important;
-  gap: clamp(16px, 1.6vw, 26px) !important;
-  margin-top: 12px !important;
+  display:grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(18px, 1.8vw, 28px);
+  margin-top: 12px;
 }
-
 .slide-menu .menu-col{
-  font-size: clamp(18px, 1.5vw, 26px) !important;
+  font-size: clamp(18px, 1.6vw, 28px);
+  color:var(--bleu-fonce);
 }
-
 .slide-menu .menu-col h3{
-  font-size: clamp(20px, 1.7vw, 28px) !important;
+  font-size: clamp(20px, 1.8vw, 30px);
+  margin-bottom:10px;
+  border-bottom:2px solid var(--bleu-fonce);
+  padding-bottom:6px;
+}
+.slide-menu .menu-col ul{list-style:none;margin-bottom:14px}
+.slide-menu .menu-col li{
+  display:flex;justify-content:space-between;
+  margin-bottom:10px;gap:18px
+}
+.slide-menu .menu-col li span{
+  color:var(--or);font-weight:900;white-space:nowrap
 }
 
-/* 6) Footer menu un peu moins haut pour laisser plus de place au contenu */
 .slide-menu .menu-footer{
-  padding: 14px 28px 16px !important;
+  background:linear-gradient(135deg,var(--bleu-fonce),#1e63b6);
+  padding:12px 22px 14px;color:#fff;
 }
+.slide-menu .footer-small{letter-spacing:5px;font-size: clamp(12px, 1.1vw, 16px);opacity:.92;font-weight:800}
+.slide-menu .footer-title{font-size: clamp(18px, 1.8vw, 28px);font-weight:900;margin:6px 0}
+.slide-menu .footer-sub{font-size: clamp(14px, 1.3vw, 18px);opacity:.95}
 
-.slide-menu .footer-title{
-  font-size: clamp(18px, 1.8vw, 28px) !important;
+/* Responsive au cas où */
+@media (max-width:1100px){
+  .slide-menu .menu-columns{grid-template-columns: 1fr}
+  .prod-left{max-width: 90%}
 }
-.slide-menu .footer-sub{
-  font-size: clamp(14px, 1.4vw, 20px) !important;
-}
-/* ===============================
-   SLIDE 2 : IMAGE EN FOND (TV)
-   =============================== */
-
-/* Image produit en fond */
-.slide-produit{
-  background:
-    linear-gradient(
-      rgba(255,255,255,0.85),
-      rgba(255,255,255,0.85)
-    ),
-    url("nouveau-produit.png") center / cover no-repeat !important;
-
-  align-items: center !important;
-  padding: 28px !important;
-}
-
-/* On cache l'image <img> (plus besoin) */
-.prod-img-real{
-  display: none !important;
-}
-
-/* Texte centré et plus impactant */
-.prod-left{
-  max-width: 65% !important;
-  margin: auto !important;
-  text-align: center !important;
-}
-
-/* Titre très lisible */
-.prod-title{
-  font-size: clamp(48px, 4.5vw, 80px) !important;
-}
-
-/* Prix ultra visible */
-.price{
-  margin: 22px auto 0 !important;
-}
-
-
 </style>
 </head>
 
@@ -502,7 +354,7 @@ body{
     </div>
   </section>
 
-  <!-- SLIDE 2 : NOUVEAU PRODUIT -->
+  <!-- SLIDE 2 : NOUVEAU PRODUIT (FOND IMAGE NETTE) -->
   <section class="slide s2 slide-produit">
     <div class="prod-left">
       <div class="badge"><span class="dot"></span> NOUVEAUTÉ</div>
@@ -520,17 +372,39 @@ body{
     </div>
   </section>
 
-  <!-- SLIDE 3 : MENU -->
-  <!-- SLIDE 3 : MENU -->
+  <!-- SLIDE 3 : MENU (2 colonnes) -->
   <section class="slide s3 slide-menu">
     <div class="menu-zone">
       <div class="menu-card">
         <div class="menu-head">
-  
+          <div class="menu-tag">CARTE LA PERLA</div>
+          <div class="menu-title-main">Menu</div>
+          <div class="menu-sub">Entrées · Sandwichs · Plats</div>
         </div>
 
         <div class="menu-columns">
+
+          <!-- Colonne gauche -->
           <div class="menu-col">
+            <h3>Sandwichs & Pizza</h3>
+            <ul>
+              <li>Makloub <span>8 €</span></li>
+              <li>Baguette Farcie <span>9 €</span></li>
+              <li>Cornet <span>9 €</span></li>
+              <li>Libanais <span>9 €</span></li>
+              <li>Tabouna <span>8 €</span></li>
+              <li>Chapatti Mahdia <span>8 €</span></li>
+              <li>Chapatti <span>6 €</span></li>
+              <li>Mlawi <span>7 €</span></li>
+              <li>Sandwich Kaftajji <span>8 €</span></li>
+              <li>Sandwich Tounsi <span>8 €</span></li>
+              <li>Sandwich Escalope <span>8 €</span></li>
+            </ul>
+          </div>
+
+          <!-- Colonne droite -->
+          <div class="menu-col">
+
             <h3>Entrées</h3>
             <ul>
               <li>Brick à l’œuf <span>3 €</span></li>
@@ -538,41 +412,23 @@ body{
               <li>Salade Tunisienne ou salade mechwia <span>7 €</span></li>
               <li>Frites maison <span>3 €</span></li>
             </ul>
-          </div>
 
-          <div class="menu-col">
-            <h3>Sandwichs && Pizza</h3>
-            <ul>
-              <li>Makloub  <span>8 €</span></li>
-              <li>Baguette Farcie <span>9 €</span></li>
-	      <li>Cornet <span>9 €</span></li>
-              <li>Libanais <span>9 €</span></li>
-	      <li>Tabouna <span>8 €</span></li>
-	      <li>Chapatti Mahdia<span>8 €</span></li>
-	      <li>Chapatti <span>6 €</span></li>
-	      <li>Mlawi <span>7 €</span></li>
-	      <li>Sandwich Kaftajji <span>8 €</span></li>
-	      <li>Sandwich Tounsi <span>8 €</span></li>
-	      <li>Sandwich Escalope <span>8 €</span></li>
-            </ul>
-          </div>
-
-          <div class="menu-col">
             <h3>Plats</h3>
             <ul>
               <li>Plat Kaftajji <span>9 €</span></li>
-              <li>Plat Kaftajji Mergez <span>12 €</span></li>
+              <li>Plat Kaftajji Merguez <span>12 €</span></li>
               <li>Plat Tunisien <span>9 €</span></li>
               <li>Ojja Merguez <span>10,50 €</span></li>
             </ul>
-          </div>
-       <div class="menu-col">
+
             <h3>Boissons</h3>
             <ul>
-              <li>Eau minrale <span>1.8 €</span></li>
-              <li>Soudes <span>1.8 €</span></li>
+              <li>Eau minérale <span>1,8 €</span></li>
+              <li>Sodas <span>1,8 €</span></li>
             </ul>
+
           </div>
+
         </div>
       </div>
     </div>
