@@ -43,7 +43,7 @@ body{
 .logo img{
   height:88px;width:auto;
   border-radius:999px;
-  background:transparent;
+  background:transparent;       /* pas de contour forcé */
   box-shadow:0 10px 24px rgba(0,0,0,.28);
 }
 
@@ -274,7 +274,7 @@ body{
 }
 
 /* =========================================================
-   SLIDE 3 : MENU
+   SLIDE 3 : MENU (3 colonnes)
    ========================================================= */
 .slide-menu{
   background:linear-gradient(180deg,#fdf8ee,#f1e6d3);
@@ -319,152 +319,78 @@ body{
   .prod-img-real{max-width:80vw;max-height:45vh}
   .menu-columns{flex-direction:column}
 }
+/* =========================
+   FIX AFFICHAGE TV (43")
+   Ajoute a la fin du CSS
+   ========================= */
 
-/* =========================================
-   FIX AFFICHAGE TV (43") + NOUVEAU DESIGN
-   ========================================= */
-
-/* Frame plus grande */
+/* 1) Frame beaucoup plus grande (moins de marges) */
 .frame{
   top: 18px !important;
   left: 18px !important;
   right: 18px !important;
-  bottom: 18px !important;
+  bottom: 18px !important; /* au lieu de 110px */
   border-radius: 22px !important;
 }
 
-/* annule le decalage à gauche */
+/* 2) Annule le decalage a gauche (il te reduit l'ecran) */
 @media (min-width:1200px){
   .frame{ left: 18px !important; }
 }
 
-/* ====== SLIDE 2 (PUB) ====== */
-.slide-produit{
-  padding: 24px !important;
-  gap: 22px !important;
-  align-items: stretch !important;
+/* 3) Menu: utilise toute la hauteur disponible */
+.slide-menu{
+  height: 100% !important;
 }
 
-.prod-left{
-  flex: 1.05 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: center !important;
-  padding: 18px 18px 18px 26px !important;
-}
-
-.badge{
-  font-size: clamp(14px, 1.1vw, 18px) !important;
-  padding: 10px 16px !important;
-  margin-bottom: 14px !important;
-}
-
-.prod-title{
-  font-size: clamp(44px, 3.8vw, 72px) !important;
-  margin-bottom: 10px !important;
-}
-
-.prod-sub{
-  font-size: clamp(18px, 1.6vw, 28px) !important;
-  margin-bottom: 14px !important;
-}
-
-.prod-list{
-  font-size: clamp(18px, 1.6vw, 26px) !important;
-  margin-bottom: 18px !important;
-}
-
-.price{
-  padding: 16px 28px !important;
-  gap: 14px !important;
-}
-
-.price b{
-  font-size: clamp(56px, 4.6vw, 92px) !important;
-  line-height: 1 !important;
-}
-
-.price span{
-  font-size: clamp(14px, 1.2vw, 18px) !important;
-}
-
-.prod-right{
-  flex: 1.15 !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  padding: 10px 10px 10px 0 !important;
-}
-
-.prod-img-real{
-  max-width: 46vw !important;
-  max-height: 70vh !important;
-  width: auto !important;
-  height: auto !important;
-}
-
-/* ====== SLIDE 3 (MENU TV) ====== */
 .slide-menu .menu-zone{
-  padding: 16px 22px 12px !important;
+  padding: 22px 28px 16px !important; /* moins de padding */
 }
 
 .slide-menu .menu-card{
-  padding: 18px 18px 14px !important;
+  height: calc(100% - 0px) !important;
+  padding: 22px 22px 16px !important;
 }
 
+/* 4) Texte menu plus gros (lisible TV) */
 .slide-menu .menu-tag{
-  font-size: clamp(16px, 1.2vw, 20px) !important;
-  letter-spacing: 0.18em !important;
+  font-size: clamp(16px, 1.3vw, 22px) !important;
 }
 
 .slide-menu .menu-title-main{
-  font-size: clamp(34px, 2.8vw, 52px) !important;
+  font-size: clamp(34px, 2.6vw, 48px) !important;
 }
 
 .slide-menu .menu-sub{
   font-size: clamp(16px, 1.4vw, 22px) !important;
 }
 
+/* 5) Colonnes: en GRID propre (4 colonnes), plus stable que flex */
 .slide-menu .menu-columns{
   display: grid !important;
-  grid-template-columns: 1.15fr 1fr !important;
-  gap: clamp(18px, 1.8vw, 28px) !important;
+  grid-template-columns: repeat(4, 1fr) !important;
+  gap: clamp(16px, 1.6vw, 26px) !important;
   margin-top: 12px !important;
 }
 
 .slide-menu .menu-col{
-  font-size: clamp(18px, 1.6vw, 28px) !important;
+  font-size: clamp(18px, 1.5vw, 26px) !important;
 }
 
 .slide-menu .menu-col h3{
-  font-size: clamp(20px, 1.8vw, 30px) !important;
-  margin-bottom: 10px !important;
-  padding-bottom: 6px !important;
+  font-size: clamp(20px, 1.7vw, 28px) !important;
 }
 
-.slide-menu .menu-col li{
-  margin-bottom: 10px !important;
-  gap: 18px !important;
-}
-
-.slide-menu .menu-col li span{
-  font-size: clamp(18px, 1.6vw, 28px) !important;
-}
-
+/* 6) Footer menu un peu moins haut pour laisser plus de place au contenu */
 .slide-menu .menu-footer{
-  padding: 12px 22px 14px !important;
-}
-
-.slide-menu .footer-small{
-  font-size: clamp(12px, 1.1vw, 16px) !important;
+  padding: 14px 28px 16px !important;
 }
 
 .slide-menu .footer-title{
   font-size: clamp(18px, 1.8vw, 28px) !important;
 }
-
 .slide-menu .footer-sub{
-  font-size: clamp(14px, 1.3vw, 18px) !important;
+  font-size: clamp(14px, 1.4vw, 20px) !important;
 }
 
 </style>
@@ -517,39 +443,17 @@ body{
     </div>
   </section>
 
-  <!-- SLIDE 3 : MENU (2 colonnes lisibles) -->
+  <!-- SLIDE 3 : MENU -->
+  <!-- SLIDE 3 : MENU -->
   <section class="slide s3 slide-menu">
     <div class="menu-zone">
       <div class="menu-card">
         <div class="menu-head">
           <div class="menu-tag">CARTE LA PERLA</div>
-          <div class="menu-title-main">Menu</div>
-          <div class="menu-sub">Entrées · Sandwichs · Plats</div>
         </div>
 
         <div class="menu-columns">
-
-          <!-- Colonne gauche -->
           <div class="menu-col">
-            <h3>Sandwichs & Pizza</h3>
-            <ul>
-              <li>Makloub <span>8 €</span></li>
-              <li>Baguette Farcie <span>9 €</span></li>
-              <li>Cornet <span>9 €</span></li>
-              <li>Libanais <span>9 €</span></li>
-              <li>Tabouna <span>8 €</span></li>
-              <li>Chapatti Mahdia <span>8 €</span></li>
-              <li>Chapatti <span>6 €</span></li>
-              <li>Mlawi <span>7 €</span></li>
-              <li>Sandwich Kaftajji <span>8 €</span></li>
-              <li>Sandwich Tounsi <span>8 €</span></li>
-              <li>Sandwich Escalope <span>8 €</span></li>
-            </ul>
-          </div>
-
-          <!-- Colonne droite -->
-          <div class="menu-col">
-
             <h3>Entrées</h3>
             <ul>
               <li>Brick à l’œuf <span>3 €</span></li>
@@ -557,23 +461,41 @@ body{
               <li>Salade Tunisienne ou salade mechwia <span>7 €</span></li>
               <li>Frites maison <span>3 €</span></li>
             </ul>
+          </div>
 
+          <div class="menu-col">
+            <h3>Sandwichs && Pizza</h3>
+            <ul>
+              <li>Makloub  <span>8 €</span></li>
+              <li>Baguette Farcie <span>9 €</span></li>
+	      <li>Cornet <span>9 €</span></li>
+              <li>Libanais <span>9 €</span></li>
+	      <li>Tabouna <span>8 €</span></li>
+	      <li>Chapatti Mahdia<span>8 €</span></li>
+	      <li>Chapatti <span>6 €</span></li>
+	      <li>Mlawi <span>7 €</span></li>
+	      <li>Sandwich Kaftajji <span>8 €</span></li>
+	      <li>Sandwich Tounsi <span>8 €</span></li>
+	      <li>Sandwich Escalope <span>8 €</span></li>
+            </ul>
+          </div>
+
+          <div class="menu-col">
             <h3>Plats</h3>
             <ul>
               <li>Plat Kaftajji <span>9 €</span></li>
-              <li>Plat Kaftajji Merguez <span>12 €</span></li>
+              <li>Plat Kaftajji Mergez <span>12 €</span></li>
               <li>Plat Tunisien <span>9 €</span></li>
               <li>Ojja Merguez <span>10,50 €</span></li>
             </ul>
-
+          </div>
+       <div class="menu-col">
             <h3>Boissons</h3>
             <ul>
-              <li>Eau minérale <span>1,8 €</span></li>
-              <li>Sodas <span>1,8 €</span></li>
+              <li>Eau minrale <span>1.8 €</span></li>
+              <li>Soudes <span>1.8 €</span></li>
             </ul>
-
           </div>
-
         </div>
       </div>
     </div>
