@@ -598,6 +598,11 @@ body{
     if(document.visibilityState === 'visible') requestWakeLock();
   });
   requestWakeLock();
+  document.addEventListener("click", () => {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+  }
+}, { once: true });
 </script>
 
 </body>
