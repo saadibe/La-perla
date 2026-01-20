@@ -430,6 +430,45 @@ body{
 .slide-menu .footer-sub{
   font-size: clamp(14px, 1.4vw, 20px) !important;
 }
+/* ===============================
+   SLIDE 2 : IMAGE EN FOND (TV)
+   =============================== */
+
+/* Image produit en fond */
+.slide-produit{
+  background:
+    linear-gradient(
+      rgba(255,255,255,0.85),
+      rgba(255,255,255,0.85)
+    ),
+    url("nouveau-produit.png") center / cover no-repeat !important;
+
+  align-items: center !important;
+  padding: 28px !important;
+}
+
+/* On cache l'image <img> (plus besoin) */
+.prod-img-real{
+  display: none !important;
+}
+
+/* Texte centré et plus impactant */
+.prod-left{
+  max-width: 65% !important;
+  margin: auto !important;
+  text-align: center !important;
+}
+
+/* Titre très lisible */
+.prod-title{
+  font-size: clamp(48px, 4.5vw, 80px) !important;
+}
+
+/* Prix ultra visible */
+.price{
+  margin: 22px auto 0 !important;
+}
+
 
 </style>
 </head>
