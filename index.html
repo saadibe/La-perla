@@ -1,13 +1,13 @@
 <!doctype html>
 <html lang="fr">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>La Perla - Menu TV</title>
+  <meta charset="utf-8">
+  <title>Menu La Perla – TV</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     /* ============================= */
-    /*      TV 43" – FULL SCREEN     */
+    /*   AFFICHAGE TV 43" – MENU     */
     /* ============================= */
 
     html, body {
@@ -15,27 +15,16 @@
       height: 100%;
       margin: 0;
       overflow: hidden;
-      font-family: "Segoe UI", "Roboto", Arial, sans-serif;
-      background: radial-gradient(1200px 700px at 50% 20%, rgba(255,255,255,0.06), transparent 60%),
-                  linear-gradient(135deg, #0c2a4a, #0a1e33);
-      color: #ffffff;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
-    /* Slide wrapper */
-    .slide {
+    /* Section plein écran */
+    .slide-menu {
       width: 100vw;
       height: 100vh;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      box-sizing: border-box;
-    }
-
-    /* ============================= */
-    /*            SLIDE 3            */
-    /* ============================= */
-    .slide-menu {
-      padding: 2vh 2vw;
     }
 
     /* Zone centrale */
@@ -44,75 +33,60 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      padding: 2vh 2vw;
+      box-sizing: border-box;
     }
 
-    /* Carte principale */
+    /* Carte menu */
     .menu-card {
       width: 96vw;
-      height: 90vh;
+      height: 88vh;
       max-width: 1800px;
       max-height: 950px;
-      padding: 32px 40px 26px;
-      border-radius: 22px;
+      padding: 28px 36px;
+      box-sizing: border-box;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
-
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.14);
-      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-      backdrop-filter: blur(6px);
     }
 
-    /* ===== HEADER ===== */
+    /* En-tête */
     .menu-head {
       text-align: center;
-      padding-top: 4px;
+      margin-bottom: 12px;
     }
 
     .menu-tag {
-      font-size: clamp(18px, 1.5vw, 26px);
-      letter-spacing: 0.18em;
-      font-weight: 800;
-      opacity: 0.95;
+      font-size: clamp(16px, 1.4vw, 24px);
+      letter-spacing: 0.15em;
+      font-weight: bold;
     }
 
     .menu-title-main {
-      font-size: clamp(48px, 4.5vw, 84px);
+      font-size: clamp(44px, 4.2vw, 80px);
       font-weight: 900;
-      margin: 10px 0 6px;
-      line-height: 1.02;
+      margin: 6px 0;
     }
 
     .menu-sub {
-      font-size: clamp(20px, 1.8vw, 30px);
-      opacity: 0.9;
+      font-size: clamp(18px, 1.8vw, 28px);
     }
 
-    /* ===== COLONNES ===== */
+    /* Colonnes */
     .menu-columns {
+      flex: 1;
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: clamp(18px, 1.8vw, 32px);
-      flex: 1;
-      margin-top: 18px;
-      align-items: start;
+      gap: clamp(16px, 1.6vw, 28px);
     }
 
-    .menu-col {
-      padding: 10px 12px;
-      border-radius: 16px;
-      background: rgba(0,0,0,0.14);
-      border: 1px solid rgba(255,255,255,0.10);
-    }
-
+    /* Titres catégories */
     .menu-col h3 {
-      font-size: clamp(24px, 2.2vw, 36px);
+      font-size: clamp(22px, 2.2vw, 34px);
+      margin-bottom: 12px;
       font-weight: 900;
-      margin: 4px 0 14px;
-      letter-spacing: 0.02em;
     }
 
+    /* Items */
     .menu-col ul {
       list-style: none;
       margin: 0;
@@ -123,60 +97,42 @@
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      gap: 16px;
-
-      font-size: clamp(20px, 1.7vw, 30px);
-      padding: 10px 0;
+      font-size: clamp(18px, 1.6vw, 28px);
+      padding: 8px 0;
       line-height: 1.25;
-
-      border-bottom: 1px solid rgba(255,255,255,0.10);
-    }
-
-    .menu-col li:last-child {
-      border-bottom: 0;
     }
 
     .menu-col li span {
       font-weight: 900;
       white-space: nowrap;
-      opacity: 0.98;
     }
 
-    /* ===== FOOTER ===== */
+    /* Footer */
     .menu-footer {
       text-align: center;
-      padding-top: 12px;
+      margin-top: 8px;
     }
 
     .footer-small {
       font-size: clamp(14px, 1.2vw, 20px);
-      letter-spacing: 0.15em;
-      opacity: 0.9;
+      letter-spacing: 0.12em;
     }
 
     .footer-title {
-      font-size: clamp(30px, 2.8vw, 46px);
+      font-size: clamp(28px, 2.6vw, 44px);
       font-weight: 900;
-      margin: 8px 0 4px;
     }
 
     .footer-sub {
       font-size: clamp(18px, 1.6vw, 26px);
-      opacity: 0.92;
     }
 
-    /* ===== SECURITÉ PETITS ÉCRANS ===== */
+    /* Sécurité écrans plus petits */
     @media (max-width: 1400px) {
       .menu-columns {
         grid-template-columns: repeat(2, 1fr);
       }
-      .menu-card {
-        height: 94vh;
-      }
     }
-
-    /* Accessibilité : pas de sélection involontaire sur TV */
-    * { -webkit-tap-highlight-color: transparent; }
   </style>
 </head>
 
@@ -206,7 +162,7 @@
           </div>
 
           <div class="menu-col">
-            <h3>Sandwichs & Pizza</h3>
+            <h3>Sandwichs && Pizza</h3>
             <ul>
               <li>Makloub <span>8 €</span></li>
               <li>Baguette Farcie <span>9 €</span></li>
@@ -226,7 +182,7 @@
             <h3>Plats</h3>
             <ul>
               <li>Plat Kaftajji <span>9 €</span></li>
-              <li>Plat Kaftajji Merguez <span>12 €</span></li>
+              <li>Plat Kaftajji Mergez <span>12 €</span></li>
               <li>Plat Tunisien <span>9 €</span></li>
               <li>Ojja Merguez <span>10,50 €</span></li>
             </ul>
@@ -235,20 +191,19 @@
           <div class="menu-col">
             <h3>Boissons</h3>
             <ul>
-              <li>Eau minérale <span>1,8 €</span></li>
-              <li>Sodas <span>1,8 €</span></li>
+              <li>Eau minrale <span>1.8 €</span></li>
+              <li>Soudes <span>1.8 €</span></li>
             </ul>
           </div>
 
         </div>
-
-        <div class="menu-footer">
-          <div class="footer-small">LA PERLA · SAVEURS AUTHENTIQUES</div>
-          <div class="footer-title">Sur place ou à emporter</div>
-          <div class="footer-sub">Merci & bon appétit !</div>
-        </div>
-
       </div>
+    </div>
+
+    <div class="menu-footer">
+      <div class="footer-small">LA PERLA · SAVEURS AUTHENTIQUES</div>
+      <div class="footer-title">Sur place ou à emporter</div>
+      <div class="footer-sub">Merci & bon appétit !</div>
     </div>
   </section>
 
