@@ -17,9 +17,9 @@ html,body{width:100%;height:100%;overflow:hidden;font-family:Arial,Helvetica,san
   --blanc:#fff;
 
   /* timings */
-  --t1:8s;     /* porte (5s fermée + 3s ouverte) */
-  --t2:22s;    /* nouveau produit */
-  --t3:20s;    /* menu */
+  --t1:8;     /* porte (5s fermée + 3s ouverte) */
+  --t2:20s;    /* nouveau produit */
+  --t3:12s;    /* menu */
   --loop:40s;  /* total = 8+12+20 */
 }
 body{
@@ -86,25 +86,29 @@ body{
 @keyframes s1{
   0%{opacity:0}
   2%{opacity:1}
-  20%{opacity:1}
-  22%{opacity:0}
+  18%{opacity:1}
+  20%{opacity:0}
   100%{opacity:0}
 }
+
 @keyframes s2{
   0%{opacity:0}
   20%{opacity:0}
   22%{opacity:1}
-  50%{opacity:1}
-  52%{opacity:0}
+  68%{opacity:1}   /* ⬅ reste visible plus longtemps */
+  70%{opacity:0}
   100%{opacity:0}
 }
+
 @keyframes s3{
   0%{opacity:0}
-  50%{opacity:0}
-  52%{opacity:1}
+  70%{opacity:0}
+  72%{opacity:1}
   98%{opacity:1}
   100%{opacity:0}
 }
+
+
 
 /* =========================================================
    SLIDE 1 : PORTE PLEIN ÉCRAN (fermée -> ouverte)
@@ -466,15 +470,16 @@ body{
 .slide-menu .footer-sub{
   font-size: clamp(14px, 1.3vw, 18px) !important;
 }
-/* ===== Slide 2 video plein écran ===== */
+/* ===== Slide 2 video plein écran NON zoomée ===== */
 
-/* la vidéo remplit tout */
-.slide-produit .bg-video{
+
+.slide-produit video.bg-video{
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;       /* plein écran (ça peut couper un peu) */
+  object-fit: contain;   /* ✅ pas de zoom */
+  background: #000;      /* bandes noires */
 }
 
 
