@@ -466,6 +466,16 @@ body{
 .slide-menu .footer-sub{
   font-size: clamp(14px, 1.3vw, 18px) !important;
 }
+/* ===== Slide 2 video plein écran ===== */
+
+/* la vidéo remplit tout */
+.slide-produit .bg-video{
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;       /* plein écran (ça peut couper un peu) */
+}
 
 
 </style>
@@ -509,20 +519,9 @@ body{
     <source src="video-produit.mp4" type="video/mp4">
   </video>
 
-  <!-- Optionnel: overlay pour lisibilité du texte -->
-  <div class="video-overlay"></div>
+
 
   <!-- Ton texte (optionnel) -->
-  <div class="prod-left">
-    <div class="badge"><span class="dot"></span> NOUVEAUTÉ</div>
-    <div class="prod-title">Sandwich Libanais</div>
-    <div class="prod-sub">Pain chaud, recette maison, goût authentique.</div>
-    <div class="prod-list">
-      🌯 Viande / poulet façon chawarma<br>
-      🥗 Crudités fraîches & sauce maison
-    </div>
-    <div class="price"><b>9€</b><span>Sur place / À emporter</span></div>
-  </div>
 
 </section>
 
