@@ -207,70 +207,144 @@ body{
 .petal svg{width:100%;height:100%}
 
 /* =========================================================
-   SLIDE 2 : NOUVEAU PRODUIT (ton PNG)
+   SLIDE 2 : NOUVEAU PRODUIT (La Perla - image grande)
    ========================================================= */
 .slide-produit{
+  position: relative;
+  display:flex;
+  align-items:stretch;
+  justify-content:center;
+  gap: 22px;
+
+  /* Fond "La Perla" (bleu + beige) */
   background:
-    radial-gradient(circle at top left, rgba(10,102,183,0.10) 0%, transparent 45%),
-    radial-gradient(circle at top right, rgba(200,160,74,0.12) 0%, transparent 50%),
-    radial-gradient(circle at top,#ffffff 0%,#f7f2ec 60%,#f1e6d3 100%);
-  display:flex;align-items:center;justify-content:center;
-  padding:52px;gap:42px;
+    radial-gradient(circle at 18% 20%, rgba(10,102,183,0.14) 0%, transparent 45%),
+    radial-gradient(circle at 82% 20%, rgba(200,160,74,0.16) 0%, transparent 55%),
+    linear-gradient(180deg, #ffffff 0%, #f7f2ec 55%, #f1e6d3 100%);
+
+  padding: 18px 20px;
 }
-.prod-left{flex:1.05;color:var(--bleu-fonce)}
+
+/* Partie texte : plus compacte, à gauche */
+.prod-left{
+  flex: 0.95;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  padding: 18px 16px 18px 22px;
+  color: var(--bleu-fonce);
+}
+
+/* Badge plus "premium" */
 .badge{
   display:inline-flex;align-items:center;gap:10px;
-  background:rgba(255,255,255,.9);
-  border:2px solid rgba(11,60,116,.15);
-  border-radius:999px;
-  padding:10px 14px;
-  box-shadow:0 10px 24px rgba(0,0,0,.12);
-  margin-bottom:18px;
-  font-weight:900;
-  letter-spacing:.22em;
-  text-transform:uppercase;
-  color:#2c5a9a;
+  background: rgba(255,255,255,.95);
+  border: 2px solid rgba(11,60,116,.15);
+  border-radius: 999px;
+  padding: 10px 16px;
+  box-shadow: 0 10px 24px rgba(0,0,0,.12);
+  margin-bottom: 12px;
+  font-weight: 900;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: #2c5a9a;
 }
-.badge .dot{
-  width:10px;height:10px;border-radius:50%;
-  background:linear-gradient(135deg,#0b8b4b,#c62828);
-}
+
 .prod-title{
-  font-size:56px;font-weight:900;margin-bottom:12px;
-  color:var(--bleu-fonce);
+  font-size: clamp(44px, 3.8vw, 74px);
+  font-weight: 900;
+  margin-bottom: 10px;
+  color: var(--bleu-fonce);
 }
+
 .prod-sub{
-  font-size:22px;line-height:1.45;margin-bottom:18px;color:#234;
+  font-size: clamp(18px, 1.6vw, 28px);
+  line-height: 1.35;
+  margin-bottom: 12px;
+  color:#234;
   opacity:.92;
 }
-.prod-list{
-  font-size:22px;line-height:1.65;margin-bottom:22px;
-}
-.price{
-  display:inline-flex;align-items:baseline;gap:12px;
-  background:linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
-  color:#fff;border-radius:999px;
-  padding:14px 26px;
-  box-shadow:0 16px 34px rgba(0,0,0,.18);
-  border:2px solid rgba(255,255,255,.55);
-}
-.price b{font-size:48px}
-.price span{font-size:18px;opacity:.95}
 
+.prod-list{
+  font-size: clamp(18px, 1.6vw, 26px);
+  line-height: 1.5;
+  margin-bottom: 16px;
+}
+
+/* Prix plus visible */
+.price{
+  display:inline-flex;
+  align-items:center;
+  gap: 14px;
+
+  background: linear-gradient(135deg,var(--bleu),var(--bleu-fonce));
+  color:#fff;
+  border-radius: 18px;             /* plus "carte" que pill */
+  padding: 16px 18px;
+  box-shadow: 0 16px 34px rgba(0,0,0,.18);
+  border: 2px solid rgba(255,255,255,.65);
+
+  width: fit-content;
+}
+
+.price b{
+  font-size: clamp(54px, 4.4vw, 92px);
+  line-height: 1;
+}
+
+.price span{
+  font-size: clamp(14px, 1.1vw, 18px);
+  opacity: .95;
+}
+
+/* Partie image : BEAUCOUP plus grande à droite */
 .prod-right{
-  flex:1;display:flex;align-items:center;justify-content:center;
+  flex: 1.25;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding: 10px 10px 10px 0;
 }
+
+/* IMAGE : prend presque toute la slide */
 .prod-img-real{
-  max-width:42vw;
-  max-height:62vh;
-  object-fit:contain;
-  filter:drop-shadow(0 22px 44px rgba(0,0,0,.35));
-  animation:prodFloat 6s ease-in-out infinite;
+  width: min(60vw, 980px);
+  height: min(78vh, 820px);
+  object-fit: contain;
+
+  filter: drop-shadow(0 22px 44px rgba(0,0,0,.30));
+  animation: prodFloat 6s ease-in-out infinite;
 }
+
+/* petit encadrement "carte" derrière l'image (style La Perla) */
+.slide-produit::after{
+  content:"";
+  position:absolute;
+  right: 18px;
+  top: 16px;
+  bottom: 16px;
+  width: min(60vw, 980px);
+  border-radius: 26px;
+  background: rgba(255,255,255,.55);
+  border: 2px solid rgba(11,60,116,.10);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.6);
+  z-index: 0;
+}
+.prod-right, .prod-left{ position: relative; z-index: 1; }
+
+/* Animation (tu l'avais déjà) */
 @keyframes prodFloat{
   0%{transform:translateY(0) scale(1)}
-  50%{transform:translateY(-14px) scale(1.04)}
+  50%{transform:translateY(-10px) scale(1.03)}
   100%{transform:translateY(0) scale(1)}
+}
+
+/* Mobile / petit écran */
+@media (max-width:1100px){
+  .slide-produit{flex-direction:column; padding:18px}
+  .prod-right{padding:0}
+  .prod-img-real{width: 92vw; height: 46vh;}
+  .slide-produit::after{display:none;}
 }
 
 /* =========================================================
